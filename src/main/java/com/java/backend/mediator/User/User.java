@@ -3,8 +3,7 @@ package com.java.backend.mediator.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Transient;
-
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.Id;
 
 public class User {
