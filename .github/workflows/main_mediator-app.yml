@@ -49,5 +49,5 @@ jobs:
       with:
         app-name: 'mediator-app'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_cc35c79be8e140ff91cc558892d53ce1 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_bdd71c1bde7140b080a7304783b43456 }}
         package: '*.jar'
