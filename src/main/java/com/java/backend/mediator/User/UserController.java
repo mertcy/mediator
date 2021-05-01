@@ -1,6 +1,8 @@
 package com.java.backend.mediator.User;
 
 import com.java.backend.mediator.MediatorMessage.MediatorMessage;
+import com.java.backend.mediator.Model.Model.Status;
+import com.java.backend.mediator.Utility.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,17 +23,15 @@ public class UserController {
     @PostMapping(value = "/create", produces = "application/json")
     public User createUser(@RequestBody User user) {
     	User tempUser = null;
-    	String userId =  user.getUserId();
-    	
+    	String userId =  user.getId();
+    	   	
     	if((userService.findUserByUserId(userId) != null)) {     		
     		tempUser = userService.findUserByUserId(userId);
     		
-        	if(tempUser.getStatus() == 1) { // user already exists
-        		tempUser = new User();
-        		tempUser.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_FAILURE + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);       	
-        	} else if(tempUser.getStatus() == 0) { // user has been deleted before, so valid operation
-        		tempUser = user; 
-        		saveUser(tempUser);
+        	if(tempUser.getStatus() == Status.ACTIVE) { // user already exists, so cannot be created
+        		tempUser.setMessage(User.DISCRIMINATOR + MediatorMessage.STATUS_ACTIVE + MediatorMessage.SO_MESSAGE + MediatorMessage.CRUD_FAILURE + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);       	
+        	} else if(tempUser.getStatus() == Status.INACTIVE) { // user is inactive, but same id cannot be used for saving
+        		tempUser.setMessage(User.DISCRIMINATOR + MediatorMessage.STATUS_INACTIVE + MediatorMessage.SO_MESSAGE + MediatorMessage.CRUD_FAILURE + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);       	     
         	}  		
     	} else {
     		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);
@@ -43,35 +43,50 @@ public class UserController {
     
     @PutMapping(value = "/save", produces = "application/json")
     public User saveUser(@RequestBody User user) {
-        User tempUser = userService.findUserByUserId(user.getUserId());
-        if (tempUser != null) {
-        	tempUser.status = 1;
-    		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_UPDATE + MediatorMessage.END_MESSAGE);
-        	tempUser = userService.saveUser(user);
+        User tempUser = userService.findUserByUserId(user.getId());
+        if (tempUser != null) {     	
+        	if(tempUser.getStatus() == Status.ACTIVE) { // user can be saved if it is active
+        		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_UPDATE + MediatorMessage.END_MESSAGE);
+            	tempUser = userService.saveUser(user);
+        	} else {
+        		tempUser = new User();
+        		tempUser.clearModel();
+        		tempUser.setMessage(User.DISCRIMINATOR + MediatorMessage.STATUS_INACTIVE + MediatorMessage.SO_MESSAGE + MediatorMessage.CRUD_FAILURE + MediatorMessage.CRUD_UPDATE + MediatorMessage.END_MESSAGE);       	     
+        	}
+        } else {
+        	tempUser = new User();
+    		tempUser.setMessage(User.DISCRIMINATOR + MediatorMessage.STATUS_NOTAVAILABLE + MediatorMessage.SO_MESSAGE + MediatorMessage.CRUD_FAILURE + MediatorMessage.CRUD_UPDATE + MediatorMessage.END_MESSAGE);       	     
         }
         return tempUser;
     }
     
-    /**
-     * sets the status of the specified user as 0
-     */
     @PutMapping(value = "/delete/{id}", produces = "application/json")
     public User deleteUser(@PathVariable String id) {
-        User user = userService.findUserByUserId(id);
-        if (user != null) {
-        	if(user.getStatus() == 1) { // user can be deleted if it has not been deleted before
-        		user.status = 0;
-        		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_DELETE + MediatorMessage.END_MESSAGE);
-            	userService.saveUser(user);
-        	} else {
-        		user = new User();
-        		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_FAILURE + MediatorMessage.CRUD_DELETE + MediatorMessage.END_MESSAGE);
-        	}
-        } else {
-        	user = new User();
-        	user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_DELETE + MediatorMessage.END_MESSAGE);
-        }
-        
+    	User user = new User();
+    	user.clearModel();    	
+    	
+    	if(Utility.isBlank(id)) {
+    		user.setMessage(MediatorMessage.ERROR_ISBLANK);
+    	} else if(Utility.isEmpty(id)) {
+    		user.setMessage(MediatorMessage.ERROR_ISEMPTY);
+    	} else {
+            user = userService.findUserByUserId(id);
+            if (user != null) {
+            	if(user.getStatus() == Status.ACTIVE) { // user can be deleted if it has not been deleted before
+            		user.setStatus(Status.INACTIVE);
+            		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_DELETE + MediatorMessage.END_MESSAGE);
+                	user = userService.saveUser(user);
+            	} else if(user.getStatus() == Status.INACTIVE) {
+            		user = new User();
+            		user.clearModel(); 
+            		user.setMessage(User.DISCRIMINATOR + MediatorMessage.STATUS_INACTIVE + MediatorMessage.SO_MESSAGE + MediatorMessage.CRUD_FAILURE + MediatorMessage.CRUD_DELETE + MediatorMessage.END_MESSAGE);       	     
+            	}
+            } else {
+            	user = new User();
+            	user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_DELETE + MediatorMessage.END_MESSAGE);
+            }
+    	}
+    	
         return user;
     }
 
@@ -82,17 +97,17 @@ public class UserController {
         try {
         	user = userService.findUserByUserId(id);
         	
-    		if(user.getStatus() == 1) {
+    		if(user.getStatus() == Status.ACTIVE) {
             	user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_READ + MediatorMessage.END_MESSAGE);       	
-    		} else if(user.getStatus() == 0)  {
+    		} else if(user.getStatus() == Status.INACTIVE)  {
     			user = new User();
-    			user.setStatus(0);
+    			user.setStatus(Status.INACTIVE);
             	user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_FAILURE + MediatorMessage.CRUD_READ + MediatorMessage.END_MESSAGE);       	
     		}        	
         } catch (Exception e) {
         	user = new User();
         	user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_FAILURE + MediatorMessage.CRUD_READ + MediatorMessage.END_MESSAGE);
-        	user.setStatus(-1);
+        	user.setStatus(Status.NOTAVAILABLE);
         	
             return user;
         }
@@ -100,9 +115,7 @@ public class UserController {
         return user;
     }
     
-    /**
-     * return the users which have not been deleted (ones with status=1)
-     */
+
     @GetMapping(value = "/all", produces = "application/json")
     public List<User> getAllUsers() {
     	List<User> allUsers = userService.getAllUsers();  	
@@ -110,7 +123,8 @@ public class UserController {
     	
     	for(User user: allUsers) {
     		if(user != null) {
-        		if(user.getStatus() == 1) {
+        		if(user.getStatus() == Status.ACTIVE) {
+                	user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_READ + MediatorMessage.END_MESSAGE);       	
         			activeUsers.add(user);
         		}
     		}
