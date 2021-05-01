@@ -19,7 +19,7 @@ public class ContactInfoController {
     
     @PutMapping(value = "/save", produces = "application/json")
     public ContactInfo saveContactInfo(@RequestBody ContactInfo contactInfo) {
-    	ContactInfo tempContactInfo = contactInfoService.findContactInfoByUserId(contactInfo.getUserId());
+    	ContactInfo tempContactInfo = contactInfoService.findContactInfoByUserId(contactInfo.getId());
     	if (tempContactInfo != null) {
     		tempContactInfo = contactInfoService.saveContactInfo(contactInfo);
     	}

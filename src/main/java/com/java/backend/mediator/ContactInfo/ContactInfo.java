@@ -5,10 +5,7 @@ import com.java.backend.mediator.MediatorMessage.MediatorMessage;
 import com.java.backend.mediator.Model.Model;
 
 public class ContactInfo extends Model {
-  
-    @JsonProperty("userId")
-    public String userId;
-
+ 
 	@JsonProperty("name") 
     public String name;
     
@@ -41,14 +38,6 @@ public class ContactInfo extends Model {
         nationality = MediatorMessage.STATUS_NOTAVAILABLE;
         telephoneNumber = MediatorMessage.STATUS_NOTAVAILABLE;
         address = MediatorMessage.STATUS_NOTAVAILABLE;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getName() {

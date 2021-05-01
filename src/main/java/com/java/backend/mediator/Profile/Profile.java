@@ -6,9 +6,6 @@ import com.java.backend.mediator.Model.Model;
 
 public class Profile extends Model {	
 
-	@JsonProperty("userId")
-    String userId;
-
 	@JsonProperty("profileBio")
     String profileBio;
     
@@ -17,14 +14,6 @@ public class Profile extends Model {
     public Profile(String userId) {
         super.setId(userId);
         profileBio = MediatorMessage.STATUS_NOTAVAILABLE;
-    }
-    
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
     
     public String getProfileBio() {

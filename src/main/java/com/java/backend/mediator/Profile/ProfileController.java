@@ -17,7 +17,7 @@ public class ProfileController {
     
     @PutMapping(value = "/save", produces = "application/json")
     public Profile saveProfile(@RequestBody Profile profile) {
-    	Profile tempProfile = profileService.findProfileByUserId(profile.getUserId());
+    	Profile tempProfile = profileService.findProfileByUserId(profile.getId());
         if (tempProfile != null) {
         	tempProfile = profileService.saveProfile(profile);
         }
