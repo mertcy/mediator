@@ -1,11 +1,16 @@
 package com.java.backend.mediator.Profile;
 
+import org.springframework.data.annotation.Transient;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.java.backend.mediator.MediatorMessage.MediatorMessage;
 import com.java.backend.mediator.Model.Model;
 
 public class Profile extends Model {	
 
+	@Transient
+	public static final String DISCRIMINATOR = "Profile";
+	
 	@JsonProperty("profileBio")
     String profileBio;
     

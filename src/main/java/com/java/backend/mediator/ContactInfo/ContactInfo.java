@@ -1,11 +1,16 @@
 package com.java.backend.mediator.ContactInfo;
 
+import org.springframework.data.annotation.Transient;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.java.backend.mediator.MediatorMessage.MediatorMessage;
 import com.java.backend.mediator.Model.Model;
 
 public class ContactInfo extends Model {
  
+	@Transient
+	public static final String DISCRIMINATOR = "ContactInfo";
+	
 	@JsonProperty("name") 
     public String name;
     
