@@ -4,6 +4,11 @@ import com.java.backend.mediator.MediatorMessage.MediatorMessage;
 import com.java.backend.mediator.Model.Model.Status;
 import com.java.backend.mediator.Utility.Utility;
 
+import com.java.backend.mediator.Profile.Profile;
+import com.java.backend.mediator.Profile.ProfileService;
+import com.java.backend.mediator.ContactInfo.ContactInfo;
+import com.java.backend.mediator.ContactInfo.ContactInfoService;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +19,14 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private UserService userService;
+	private ProfileService profileService;
+	private ContactInfoService contactInfoService;
 	
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ProfileService profileService, ContactInfoService contactInfoService) {
         this.userService = userService;
+        this.profileService = profileService;
+        this.contactInfoService = contactInfoService;
     }
 
     @PostMapping(value = "/create", produces = "application/json")
@@ -34,8 +43,16 @@ public class UserController {
         		tempUser.setMessage(User.DISCRIMINATOR + MediatorMessage.STATUS_INACTIVE + MediatorMessage.SO_MESSAGE + MediatorMessage.CRUD_FAILURE + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);       	     
         	}  		
     	} else {
-    		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);
-        	tempUser = userService.saveUser(user);        
+    		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);        	    		
+    		tempUser = userService.saveUser(user);     
+    		
+    		// whenever a user is being created its profile is also automatically being created 
+    		Profile profile = new Profile(user.getId());
+    		profileService.saveProfile(profile);
+    		
+    		// whenever a user is being created its contact info is also automatically being created 
+    		ContactInfo contactInfo = new ContactInfo(user.getId());
+    		contactInfoService.saveContactInfo(contactInfo);
     	}        
        
         return tempUser;		
@@ -76,6 +93,17 @@ public class UserController {
             		user.setStatus(Status.INACTIVE);
             		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_DELETE + MediatorMessage.END_MESSAGE);
                 	user = userService.saveUser(user);
+                	
+            		// whenever a user is being made inactive its profile is also automatically being made inactive 
+                	Profile profile = profileService.findProfileByUserId(id);
+                	profile.setStatus(Status.INACTIVE);
+                	profileService.saveProfile(profile);
+                	
+                	// whenever a user is being made inactive its contact info is also automatically being made inactive
+                	ContactInfo contactInfo = contactInfoService.findContactInfoByUserId(id);
+                	contactInfo.setStatus(Status.INACTIVE);
+                	contactInfoService.saveContactInfo(contactInfo);
+                	
             	} else if(user.getStatus() == Status.INACTIVE) {
             		user = new User();
             		user.clearModel(); 
