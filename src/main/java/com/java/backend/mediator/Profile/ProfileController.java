@@ -37,19 +37,13 @@ public class ProfileController {
     }
     
     @PostMapping(value = "/{id}/save-document", produces = "application/json")
-    public Profile saveDocument(@PathVariable String id, @RequestBody Document document) {  	
-    	Document tempDocument = new Document();
-    	tempDocument.setDocumentType(document.getDocumentType());
-    	tempDocument.setDocumentTitle(document.getDocumentTitle());
-    	tempDocument.setDocumentDescription(document.getDocumentDescription());
-    	tempDocument.setDocumentLink(document.getDocumentLink());
-    	
+    public Profile saveDocument(@PathVariable String id, @RequestBody Document document) {  	   	
     	Profile profile = profileService.findProfileByUserId(id);
     	ArrayList<Document> documents = profile.getDocuments(); 
         if (documents == null) {
         	documents = new ArrayList<Document>();
         }
-    	documents.add(tempDocument);
+    	documents.add(document);
     	profile.setDocuments(documents);
 
     	return profileService.saveProfile(profile);

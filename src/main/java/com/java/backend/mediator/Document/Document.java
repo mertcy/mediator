@@ -2,6 +2,7 @@ package com.java.backend.mediator.Document;
 
 import org.springframework.data.annotation.Transient;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.java.backend.mediator.Model.Model;
 
@@ -10,6 +11,7 @@ public class Document extends Model {
 	@Transient
 	public static final String DISCRIMINATOR = "Document";
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	@JsonProperty("documentType")
 	public DocumentType documentType;
 	
