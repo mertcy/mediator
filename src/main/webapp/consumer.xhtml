@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+<h:form>
+
+<p:dataTable id="xs" var="user" value="#{searchManagedBean.userList}">
+
+    <p:column headerText="User Name">
+        <h:outputText value="#{user.userName}" />
+    </p:column>
+ 
+    <p:column headerText="Email">
+        <h:outputText value="#{user.email}" />
+    </p:column>
+
+</p:dataTable>
+</h:form>        
+    </ui:define>
+
+</ui:composition>

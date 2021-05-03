@@ -1,0 +1,21 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pr="http://primefaces.org/rio">
+
+    <div class="Animated05" id="layout-menu-cover">
+            <h3>Toggleable</h3>
+            <br></br><br></br><br></br>
+            <h:form >
+    <p:menu toggleable="true" style="width: 350px;">
+        <p:submenu label="#{buttonManagedBean.name}">
+            <p:menuitem value="Logout" action="#{buttonManagedBean.logout}"  />
+        </p:submenu>
+    </p:menu>
+    </h:form>
+    </div>
+
+</ui:composition>

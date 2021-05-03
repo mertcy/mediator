@@ -26,7 +26,7 @@ public class MediatorApplication {
 	      ServletRegistrationBean srb = new ServletRegistrationBean();
 	      srb.setServlet(new FacesServlet());
 	      srb.setUrlMappings(Arrays.asList("*.xhtml"));
-	      srb.setLoadOnStartup(1);
+	      srb.setLoadOnStartup(1); 
 	      return srb;
 	  }
 
