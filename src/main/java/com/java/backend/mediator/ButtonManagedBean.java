@@ -86,7 +86,7 @@ public class ButtonManagedBean implements Serializable{
 		user.setUserType(userType.equals("Consumer")?UserType.CONSUMER:UserType.PROVIDER);
 		user.setUserName(username);
 		try {
-			User signupUser = userService.saveUser(user);
+			User signupUser = userService.createUser(user);
 			ContactInfo contact = new ContactInfo();
 			contact.setName(name);
 			contact.setLastName(surname);
@@ -94,7 +94,9 @@ public class ButtonManagedBean implements Serializable{
 			contact.setBirthDate(birthDate.toLocaleString());
 			contact.setGender(gender);
 			contact.setNationality(nationality);
-			contact.setId(signupUser.getId());
+			contact.setId(signupUser.getId());	
+			signupUser.setContactInfo(contact);
+			signupUser = userService.saveUser(signupUser);
  			clearall();
 			return "consumer.xhtml";
 		} catch (Exception e) {
