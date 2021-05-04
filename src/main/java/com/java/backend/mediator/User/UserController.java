@@ -42,17 +42,17 @@ public class UserController {
         	} else if(tempUser.getStatus() == Status.INACTIVE) { // user is inactive, but same id cannot be used for saving
         		tempUser.setMessage(User.DISCRIMINATOR + MediatorMessage.STATUS_INACTIVE + MediatorMessage.SO_MESSAGE + MediatorMessage.CRUD_FAILURE + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);       	     
         	}  		
-    	} else {
-    		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);        	    		
-    		tempUser = userService.saveUser(user);     
-    		
+    	} else {    		
     		// whenever a user is being created its profile is also automatically being created 
     		Profile profile = new Profile(user.getId());
-    		profileService.saveProfile(profile);
+    		user.setProfile(profileService.saveProfile(profile));
     		
     		// whenever a user is being created its contact info is also automatically being created 
     		ContactInfo contactInfo = new ContactInfo(user.getId());
-    		contactInfoService.saveContactInfo(contactInfo);
+    		user.setContactInfo(contactInfoService.saveContactInfo(contactInfo));
+    		
+    		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);        	    		
+    		tempUser = userService.saveUser(user);  
     	}        
        
         return tempUser;		
