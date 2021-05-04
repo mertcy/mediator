@@ -2,7 +2,9 @@ package com.java.backend.mediator.User;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.java.backend.mediator.ContactInfo.ContactInfo;
 import com.java.backend.mediator.Model.Model;
+import com.java.backend.mediator.Profile.Profile;
 
 import org.springframework.data.annotation.Transient;
 
@@ -23,6 +25,10 @@ public class User extends Model {
 
 	@JsonProperty("password") 
     public String password;
+
+	public ContactInfo contactInfo;
+	
+	public Profile profile;
 
 	public User() {
 		super();
@@ -71,6 +77,22 @@ public class User extends Model {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public ContactInfo getContactInfo() {
+		return contactInfo;
+	}
+
+	public void setContactInfo(ContactInfo contactInfo) {
+		this.contactInfo = contactInfo;
+	}
+	
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
     
 }
