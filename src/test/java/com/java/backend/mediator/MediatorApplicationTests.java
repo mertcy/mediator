@@ -1,13 +1,13 @@
-package com.java.backend.mediator;
+// package com.java.backend.mediator;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class MediatorApplicationTests {
+// @SpringBootTest
+// class MediatorApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+// 	@Test
+// 	void contextLoads() {
+// 	}
 
-}
+// }
