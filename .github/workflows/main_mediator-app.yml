@@ -41,7 +41,10 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v2
       with:
-        name: java-app
+        #name: java-app
+        github_token: ${{secrets.GITHUB_TOKEN}}
+        workflow: main_mediator-app.yml
+        pr: ${{github.event.pull_request.number}}
 
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
