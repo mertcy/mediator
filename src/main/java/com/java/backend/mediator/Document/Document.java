@@ -28,7 +28,7 @@ public class Document extends Model {
     	super();
     }
     
-	enum DocumentType {
+	public enum DocumentType {
 		DOG_TRAINING_CERTIFICATE,
 		DIPLOMA,
 		JUDICIAL_RECORD,

@@ -5,23 +5,34 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.java.backend.mediator.ContactInfo.ContactInfo;
 import com.java.backend.mediator.ContactInfo.ContactInfoController;
+import com.java.backend.mediator.Document.Document;
+import com.java.backend.mediator.Document.Document.DocumentType;
+import com.java.backend.mediator.Profile.Profile;
+import com.java.backend.mediator.Profile.ProfileController;
+import com.java.backend.mediator.Profile.ProfileService;
 import com.java.backend.mediator.User.User;
 import com.java.backend.mediator.User.User.UserType;
 import com.java.backend.mediator.User.UserController;
 
-
+@SessionScoped
 @ManagedBean
 @RequestScoped
 @Component
@@ -38,6 +49,15 @@ public class ButtonManagedBean implements Serializable{
 	@Autowired
 	ContactInfoController contactService;
 
+	@Autowired
+	ProfileService profileService;
+	
+	@Autowired
+	ProfileController profileController;
+	
+	@Autowired
+	SearchManagedBean searchManagedBean;
+	
 	public String username;
 	public String password;
 	public String email;
@@ -51,19 +71,23 @@ public class ButtonManagedBean implements Serializable{
 	private String phoneNumber;
 	private String nationality;
 	private UploadedFile file;
-    private UploadedFiles files;
     private String userType;
     //private Map<String,Map<String,String>> data = new HashMap<String, Map<String,String>>();
     private String service;
+    private String document;
 
 	private Map<String,String> services;
-
+	private Map<String,String> documents;
 
 	public String login() {
 		try {
 			List<User> users = userService.getAllUsers();
-			Optional<User> user = users.stream().filter(u->u.getUserName().equals(username) && u.getPassword().equals(password)).findFirst();
+			Optional<User> user = users.stream().filter(Objects::nonNull).filter(u->u.getUserName().equals(username) && u.getPassword().equals(password)).findFirst();
 				if (user.isPresent()) {
+		
+					// set current user session
+					searchManagedBean.setCurrentUser(userService.getUser(user.get().getId()));
+					
 					if(user.get().getUserType().equals(UserType.CONSUMER)) {
 						return "consumer.xhtml";
 					}else {
@@ -94,9 +118,14 @@ public class ButtonManagedBean implements Serializable{
 			contact.setBirthDate(birthDate.toLocaleString());
 			contact.setGender(gender);
 			contact.setNationality(nationality);
+			contact.setTelephoneNumber(phoneNumber);
 			contact.setId(signupUser.getId());	
 			signupUser.setContactInfo(contact);
 			signupUser = userService.saveUser(signupUser);
+			
+			// set current user session
+			searchManagedBean.setCurrentUser(signupUser);
+			
  			clearall();
 			return "consumer.xhtml";
 		} catch (Exception e) {
@@ -107,6 +136,10 @@ public class ButtonManagedBean implements Serializable{
 	public String toSignUp() {
 		clearall();
 		return "signup.xhtml";
+	}
+	
+	public String toProfile() {
+		return "profile.xhtml";
 	}
 
 	public void clearall() {
@@ -122,10 +155,12 @@ public class ButtonManagedBean implements Serializable{
 		phoneNumber = null;
 		userType = null;
 		service = null;
-
+		document = null;
 	}
 
 	public String logout() {
+		searchManagedBean.emptyCurrentUserSession();
+		
 		return "login.xhtml";
 	}
 
@@ -137,11 +172,32 @@ public class ButtonManagedBean implements Serializable{
 		//TODO document upload change
 	}
 
+	public void uploadDocument(FileUploadEvent event) {
+		// Get uploaded file from the FileUploadEvent
+		this.file = event.getFile();
+		// Print out the information of the file
+		System.out.println("Uploaded File Name Is :: "+file.getFileName()+" :: Uploaded File Size :: "+file.getSize());
+		
+	    Document documentObj = new Document();
+	    documentObj.setDocumentType(DocumentType.valueOf(document));
+	    documentObj.setDocumentTitle(file.getFileName());
+	    documentObj.setDocumentDescription(file.getContent().toString());
+
+	    profileController.saveDocument(searchManagedBean.getCurrentUser().getId(), documentObj);
+	    
+	}
+	
 	public ButtonManagedBean() {
 		services  = new HashMap<String, String>();
         services.put("Health Care", "Health_Care");
         services.put("House Cleaning", "House_Cleaning");
         services.put("Dog Walker", "Dog_Walker");
+        
+        documents = new HashMap<String, String>();
+        documents.put(Document.DocumentType.DIPLOMA.toString(), Document.DocumentType.DIPLOMA.toString());
+        documents.put(Document.DocumentType.DOG_TRAINING_CERTIFICATE.toString(), Document.DocumentType.DOG_TRAINING_CERTIFICATE.toString());
+        documents.put(Document.DocumentType.JUDICIAL_RECORD.toString(), Document.DocumentType.JUDICIAL_RECORD.toString());
+        documents.put(Document.DocumentType.WORK_PERMIT_CERTIFICATE.toString(), Document.DocumentType.WORK_PERMIT_CERTIFICATE.toString());
 	}
 	public String getService() {
 		return service;
@@ -151,6 +207,14 @@ public class ButtonManagedBean implements Serializable{
 		this.service = service;
 	}
 	
+	public String getDocument() {
+		return document;
+	}
+
+	public void setDocument(String document) {
+		this.document = document;
+	}
+	
 	public Map<String, String> getServices() {
 		return services;
 	}
@@ -158,6 +222,15 @@ public class ButtonManagedBean implements Serializable{
 	public void setServices(Map<String, String> services) {
 		this.services = services;
 	}
+	
+	public Map<String, String> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(Map<String, String> documents) {
+		this.documents = documents;
+	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -259,14 +332,6 @@ public class ButtonManagedBean implements Serializable{
 
 	public void setFile(UploadedFile file) {
 		this.file = file;
-	}
-
-	public UploadedFiles getFiles() {
-		return files;
-	}
-
-	public void setFiles(UploadedFiles files) {
-		this.files = files;
 	}
 
 }
