@@ -11,7 +11,8 @@
             <br></br><br></br><br></br>
             <h:form >
     <p:menu toggleable="true" style="width: 350px;">
-        <p:submenu label="#{buttonManagedBean.name}">
+        <p:submenu label="#{searchManagedBean.currentUser.userName}">
+        	<p:menuitem value="Profile" action="#{buttonManagedBean.toProfile}"  />
             <p:menuitem value="Logout" action="#{buttonManagedBean.logout}"  />
         </p:submenu>
     </p:menu>
