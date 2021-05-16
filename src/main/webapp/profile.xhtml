@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+
+		<h:form>
+		
+			<div class="EmptyBox20"></div>
+			<div class="Wid100 OvHidden BigTopic Fs30"><i class="icon-users Fs40"></i>Mediator Profile</div>
+			<div class="EmptyBox20"></div>
+		
+		    <div class="card">
+		        <p:dataTable  id="user-table" var="user" value="#{searchManagedBean.currentUser}">
+				    <p:column headerText="User Name">
+				        <h:outputText value="#{user.userName}" />
+				    </p:column>		 
+				    <p:column headerText="Email">
+				        <h:outputText value="#{user.email}" />
+				    </p:column>
+		        </p:dataTable>
+		    </div>
+			<br></br><br></br><br></br>
+		    <div class="card">
+		        <p:dataTable var="contact" value="#{searchManagedBean.currentUser.contactInfo}">
+				    <p:column headerText="Name">
+				        <h:outputText value="#{contact.name}" />
+				    </p:column>		 
+				    <p:column headerText="Last Name">
+				        <h:outputText value="#{contact.lastName}" />
+				    </p:column>
+				    <p:column headerText="Birth Date">
+				        <h:outputText value="#{contact.birthDate}" />
+				    </p:column>		 
+				    <p:column headerText="Gender">
+				        <h:outputText value="#{contact.gender}" />
+				    </p:column>
+				    <p:column headerText="Nationality">
+				        <h:outputText value="#{contact.nationality}" />
+				    </p:column>		 
+				    <p:column headerText="Telephone Number">
+				        <h:outputText value="#{contact.telephoneNumber}" />
+				    </p:column>
+		        </p:dataTable>
+		    </div>
+			<br></br><br></br><br></br>
+		    <div class="card">
+		        <p:dataTable var="contact" value="#{searchManagedBean.currentUser.contactInfo}">
+	    		    <p:column headerText="Address">
+		                <p:cellEditor>
+		                    <f:facet name="output"><h:outputText value="#{contact.address}"/></f:facet>
+		                    <f:facet name="input"><p:inputText value="#{contact.address}" style="width:100%" label="Name"/></f:facet>
+		                </p:cellEditor>
+		            </p:column>				    	 
+		        </p:dataTable>
+		    </div>    
+			<br></br><br></br><br></br>		            
+			<h:panelGrid columns="4" cellpadding="30">
+                <p:outputLabel for="document" value="Document: "/>
+                <p:selectOneMenu id="document" value="#{buttonManagedBean.document}" style="width:300px">
+                    <p:ajax listener="#{buttonManagedBean.onServiceChange}"/>
+                    <f:selectItem itemLabel="Select a document type" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{buttonManagedBean.documents}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+			<br></br><br></br><br></br>		
+			<h:form enctype="multipart/form-data" style="width:500px">
+				<p:fileUpload value="#{buttonManagedBean.file}" mode="advanced"
+					fileUploadListener="#{buttonManagedBean.uploadDocument}"></p:fileUpload>
+			</h:form>
+
+		</h:form>    
+		    
+	</ui:define>
+
+</ui:composition>
