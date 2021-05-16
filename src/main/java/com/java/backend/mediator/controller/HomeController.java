@@ -12,8 +12,8 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-    	ButtonManagedBean buttonManagedBean = SpringContext.getBean(ButtonManagedBean.class);
-    	return buttonManagedBean.toSignUp();
+    	//ButtonManagedBean buttonManagedBean = SpringContext.getBean(ButtonManagedBean.class);
+    	return "login.xhtml";
         //return "Hello from Mediator App Service (in the staging slot)!";
     }
 }
