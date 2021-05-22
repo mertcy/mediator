@@ -25,7 +25,7 @@ public class ServiceProvided extends Model {
     	super();
     }
     
-	enum ServiceType {
+	public enum ServiceType {
 		CARE_SERVICE,
 		HOUSE_CLEANING_SERVICE,
 		DOG_WALKER_SERVICE

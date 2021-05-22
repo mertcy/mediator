@@ -16,21 +16,40 @@
 			<div class="EmptyBox20"></div>
 			<div class="Wid100 OvHidden BigTopic Fs30"><i class="icon-users Fs40"></i>Provided Services</div>
 			<div class="EmptyBox20"></div>	
-			<br></br><br></br><br></br>
+			<br></br><br></br><br></br>		    
 		    <div class="card">
-		        <p:dataTable var="providedServices" value="#{searchManagedBean.provider.servicesProvided}">
-				    <p:column headerText="Type">
-				        <h:outputText value="#{providedServices.serviceType}" />
-				    </p:column>				  	 
-				    <p:column headerText="Title">
-				        <h:outputText value="#{providedServices.serviceTitle}" />
+		        <p:dataTable var="providedServices" value="#{searchManagedBean.provider.servicesProvided}" editable="true">
+		        	<p:ajax event="rowEdit" listener="#{buttonManagedBean.onRowEditProvidedService}" oncomplete="window.alert('Provided Service Edited Succesfully!');" />
+            		<p:ajax event="rowEditCancel" oncomplete="window.alert('Provided Service Editing Canceled!');" />		        			        	
+		        	<p:column headerText="Type">
+	        			<p:cellEditor>	  
+	        				<f:facet name="output"><h:outputText value="#{providedServices.serviceType}"/></f:facet>
+		                    <f:facet name="input">
+		                        <h:selectOneMenu value="#{providedServices.serviceType}" style="width:100%">
+		                            <f:selectItems value="#{buttonManagedBean.services}" var="#{buttonManagedBean.services}"
+		                                           itemLabel="#{buttonManagedBean.services}" itemValue="#{buttonManagedBean.services}"/>
+		                        </h:selectOneMenu>
+		                    </f:facet>      
+	                	</p:cellEditor>
 				    </p:column>
-				    <p:column headerText="Description">
-				        <h:outputText value="#{providedServices.serviceDescription}" />
-				    </p:column>		 	 
+	    		    <p:column headerText="Title">
+		                <p:cellEditor>
+		                    <f:facet name="output"><h:outputText value="#{providedServices.serviceTitle}"/></f:facet>
+		                    <f:facet name="input"><p:inputText value="#{providedServices.serviceTitle}" style="width:100%" label="Name"/></f:facet>
+		                </p:cellEditor>
+		            </p:column>	
+		            <p:column headerText="Description">
+		                <p:cellEditor>
+		                    <f:facet name="output"><h:outputText value="#{providedServices.serviceDescription}"/></f:facet>
+		                    <f:facet name="input"><p:inputText value="#{providedServices.serviceDescription}" style="width:100%" label="Name"/></f:facet>
+		                </p:cellEditor>
+		            </p:column>			
+		            <p:column headerText="Edit" style="width:40px">
+                		<p:rowEditor />
+                		<input type="hidden" value="#{providedServices.id}"/>
+            		</p:column>	    	 
 		        </p:dataTable>
-		    </div>
-
+		    </div>   		    
 		</h:form>    
 		    
 	</ui:define>

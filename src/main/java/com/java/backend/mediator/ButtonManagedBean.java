@@ -1,6 +1,7 @@
 package com.java.backend.mediator;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +36,9 @@ import com.java.backend.mediator.Document.Document.DocumentType;
 import com.java.backend.mediator.Profile.Profile;
 import com.java.backend.mediator.Profile.ProfileController;
 import com.java.backend.mediator.Profile.ProfileService;
+import com.java.backend.mediator.Provider.Provider;
 import com.java.backend.mediator.Provider.ProviderController;
+import com.java.backend.mediator.ServiceProvided.ServiceProvided;
 import com.java.backend.mediator.User.User;
 import com.java.backend.mediator.User.User.UserType;
 import com.java.backend.mediator.User.UserController;
@@ -228,12 +231,26 @@ public class ButtonManagedBean implements Serializable{
         user.setProfile(profileController.saveProfile(profile));
         userService.saveUser(user);
     }
+    
+    public void onRowEditProvidedService(RowEditEvent<ServiceProvided> event) {
+    	ServiceProvided tempServiceProvided = event.getObject();
+    	Provider provider = providerService.getProvider(searchManagedBean.getCurrentUser().getId());
+    	ArrayList<ServiceProvided> servicesProvided = provider.getServicesProvided();
+    	
+    	for(int i = 0; i < servicesProvided.size(); i++) {  		
+    		if(servicesProvided.get(i).getId().equals(tempServiceProvided.getId())) {
+    			servicesProvided.set(i, tempServiceProvided);
+    			provider.setServicesProvided(servicesProvided);
+    			providerService.saveProvider(provider);
+    		}
+    	}        
+    }
 	
 	public ButtonManagedBean() {
 		services  = new HashMap<String, String>();
-        services.put("Health Care", "Health_Care");
-        services.put("House Cleaning", "House_Cleaning");
-        services.put("Dog Walker", "Dog_Walker");
+        services.put("Health Care", ServiceProvided.ServiceType.CARE_SERVICE.toString());
+        services.put("House Cleaning", ServiceProvided.ServiceType.HOUSE_CLEANING_SERVICE.toString());
+        services.put("Dog Walker", ServiceProvided.ServiceType.DOG_WALKER_SERVICE.toString());
         
         documents = new HashMap<String, String>();
         documents.put(Document.DocumentType.DIPLOMA.toString(), Document.DocumentType.DIPLOMA.toString());
