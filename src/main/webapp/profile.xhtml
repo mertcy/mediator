@@ -41,20 +41,28 @@
 				    <p:column headerText="Nationality">
 				        <h:outputText value="#{contact.nationality}" />
 				    </p:column>		 
-				    <p:column headerText="Telephone Number">
-				        <h:outputText value="#{contact.telephoneNumber}" />
-				    </p:column>
 		        </p:dataTable>
 		    </div>
 			<br></br><br></br><br></br>
-		    <div class="card">
-		        <p:dataTable var="contact" value="#{searchManagedBean.currentUser.contactInfo}">
+		    <div class="card" id="card">
+		        <p:dataTable id ="contactVar" var="contact" value="#{searchManagedBean.currentUser.contactInfo}" editable="true">
+		        	<p:ajax event="rowEdit" listener="#{buttonManagedBean.onRowEditContactInfo}" oncomplete="window.alert('Contact Info Edited Succesfully!');" />
+            		<p:ajax event="rowEditCancel" oncomplete="window.alert('Contact Info Editing Canceled!');" />		        	
+		        	<p:column headerText="Telephone Number">
+	        			<p:cellEditor>
+	                    	<f:facet name="output"><h:outputText value="#{contact.telephoneNumber}"/></f:facet>
+	                    	<f:facet name="input"><p:inputText value="#{contact.telephoneNumber}" style="width:100%" label="Name"/></f:facet>
+	                	</p:cellEditor>
+				    </p:column>
 	    		    <p:column headerText="Address">
 		                <p:cellEditor>
 		                    <f:facet name="output"><h:outputText value="#{contact.address}"/></f:facet>
 		                    <f:facet name="input"><p:inputText value="#{contact.address}" style="width:100%" label="Name"/></f:facet>
 		                </p:cellEditor>
-		            </p:column>				    	 
+		            </p:column>			
+		            <p:column headerText="Edit" style="width:40px">
+                		<p:rowEditor />
+            		</p:column>	    	 
 		        </p:dataTable>
 		    </div>    
 			<br></br><br></br><br></br>		            

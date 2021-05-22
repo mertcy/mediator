@@ -8,19 +8,26 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.file.UploadedFiles;
+import org.primefaces.shaded.json.JSONObject;
+import org.primefaces.shaded.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.TreeNode;
 import com.java.backend.mediator.ContactInfo.ContactInfo;
 import com.java.backend.mediator.ContactInfo.ContactInfoController;
 import com.java.backend.mediator.Document.Document;
@@ -78,7 +85,7 @@ public class ButtonManagedBean implements Serializable{
 
 	private Map<String,String> services;
 	private Map<String,String> documents;
-
+	
 	public String login() {
 		try {
 			List<User> users = userService.getAllUsers();
@@ -186,6 +193,15 @@ public class ButtonManagedBean implements Serializable{
 	    profileController.saveDocument(searchManagedBean.getCurrentUser().getId(), documentObj);
 	    
 	}
+	
+    public void onRowEditContactInfo(RowEditEvent<ContactInfo> event) {
+    	User user = searchManagedBean.getCurrentUser();
+    	ContactInfo contactInfo = user.getContactInfo();
+        contactInfo.setTelephoneNumber(event.getObject().getTelephoneNumber());
+        contactInfo.setAddress(event.getObject().getAddress());
+        user.setContactInfo(contactService.saveContactInfo(contactInfo));
+        userService.saveUser(user);
+    }
 	
 	public ButtonManagedBean() {
 		services  = new HashMap<String, String>();
