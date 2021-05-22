@@ -35,6 +35,7 @@ import com.java.backend.mediator.Document.Document.DocumentType;
 import com.java.backend.mediator.Profile.Profile;
 import com.java.backend.mediator.Profile.ProfileController;
 import com.java.backend.mediator.Profile.ProfileService;
+import com.java.backend.mediator.Provider.ProviderController;
 import com.java.backend.mediator.User.User;
 import com.java.backend.mediator.User.User.UserType;
 import com.java.backend.mediator.User.UserController;
@@ -61,6 +62,9 @@ public class ButtonManagedBean implements Serializable{
 	
 	@Autowired
 	ProfileController profileController;
+	
+	@Autowired
+	ProviderController providerService;
 	
 	@Autowired
 	SearchManagedBean searchManagedBean;
@@ -95,11 +99,14 @@ public class ButtonManagedBean implements Serializable{
 					// set current user session
 					searchManagedBean.setCurrentUser(userService.getUser(user.get().getId()));
 					
-					if(user.get().getUserType().equals(UserType.CONSUMER)) {
-						return "consumer.xhtml";
-					}else {
-						return "provider.xhtml";		
-					}
+		 			if(user.get().getUserType().equals(User.UserType.CONSUMER)) {
+		 				return "consumer.xhtml";
+		 			} else if(user.get().getUserType().equals(User.UserType.PROVIDER)) {				
+		 				searchManagedBean.setProvider(providerService.getProvider(searchManagedBean.getCurrentUser().getId()));
+		 				
+		 				return "provider.xhtml";
+		 			}
+		 			
 				}		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -134,7 +141,18 @@ public class ButtonManagedBean implements Serializable{
 			searchManagedBean.setCurrentUser(signupUser);
 			
  			clearall();
-			return "consumer.xhtml";
+ 			
+ 			if(signupUser.getUserType().equals(User.UserType.CONSUMER)) {
+ 				return "consumer.xhtml";
+ 			} else if(signupUser.getUserType().equals(User.UserType.PROVIDER)) {
+ 				
+ 				searchManagedBean.setProvider(providerService.getProvider(searchManagedBean.getCurrentUser().getId()));
+ 				
+ 				return "provider.xhtml";
+ 			}
+ 			
+ 			return "login.xhtml";
+
 		} catch (Exception e) {
 			return e.getMessage();
 		}
