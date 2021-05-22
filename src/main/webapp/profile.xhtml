@@ -12,7 +12,23 @@
 			<div class="EmptyBox20"></div>
 			<div class="Wid100 OvHidden BigTopic Fs30"><i class="icon-users Fs40"></i>Mediator Profile</div>
 			<div class="EmptyBox20"></div>
-		
+				
+			<div class="card">
+		        <p:dataTable var="profile" value="#{searchManagedBean.currentUser.profile}" editable="true">
+		        	<p:ajax event="rowEdit" listener="#{buttonManagedBean.onRowEditProfileInfo}" oncomplete="window.alert('Profile Info Edited Succesfully!');" />
+            		<p:ajax event="rowEditCancel" oncomplete="window.alert('Profile Info Editing Canceled!');" />		        	
+		        	<p:column headerText="Profile Bio">
+	        			<p:cellEditor>
+	                    	<f:facet name="output"><h:outputText value="#{profile.profileBio}"/></f:facet>
+	                    	<f:facet name="input"><p:inputText value="#{profile.profileBio}" style="width:100%" label="Name"/></f:facet>
+	                	</p:cellEditor>
+				    </p:column>	
+		            <p:column headerText="Edit" style="width:40px">
+                		<p:rowEditor />
+            		</p:column>	    	 
+		        </p:dataTable>
+		    </div> 
+		    <br></br><br></br><br></br>
 		    <div class="card">
 		        <p:dataTable  id="user-table" var="user" value="#{searchManagedBean.currentUser}">
 				    <p:column headerText="User Name">
@@ -44,8 +60,8 @@
 		        </p:dataTable>
 		    </div>
 			<br></br><br></br><br></br>
-		    <div class="card" id="card">
-		        <p:dataTable id ="contactVar" var="contact" value="#{searchManagedBean.currentUser.contactInfo}" editable="true">
+		    <div class="card">
+		        <p:dataTable var="contact" value="#{searchManagedBean.currentUser.contactInfo}" editable="true">
 		        	<p:ajax event="rowEdit" listener="#{buttonManagedBean.onRowEditContactInfo}" oncomplete="window.alert('Contact Info Edited Succesfully!');" />
             		<p:ajax event="rowEditCancel" oncomplete="window.alert('Contact Info Editing Canceled!');" />		        	
 		        	<p:column headerText="Telephone Number">

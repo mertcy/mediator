@@ -202,6 +202,14 @@ public class ButtonManagedBean implements Serializable{
         user.setContactInfo(contactService.saveContactInfo(contactInfo));
         userService.saveUser(user);
     }
+    
+    public void onRowEditProfileInfo(RowEditEvent<Profile> event) {
+    	User user = searchManagedBean.getCurrentUser();
+    	Profile profile = user.getProfile();
+        profile.setProfileBio(event.getObject().getProfileBio());
+        user.setProfile(profileController.saveProfile(profile));
+        userService.saveUser(user);
+    }
 	
 	public ButtonManagedBean() {
 		services  = new HashMap<String, String>();
