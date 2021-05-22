@@ -10,7 +10,7 @@ public class ServiceProvided extends Model {
 
 	@Transient
 	public static final String DISCRIMINATOR = "ServiceProvided";
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	@JsonProperty("serviceType")
 	public ServiceType serviceType;
@@ -29,6 +29,30 @@ public class ServiceProvided extends Model {
 		CARE_SERVICE,
 		HOUSE_CLEANING_SERVICE,
 		DOG_WALKER_SERVICE
+	}
+	
+	public ServiceType getServiceType() {
+		return serviceType;
+	}
+
+	public void setServiceType(ServiceType serviceType) {
+		this.serviceType = serviceType;
+	}
+
+	public String getServiceTitle() {
+		return serviceTitle;
+	}
+
+	public void setServiceTitle(String serviceTitle) {
+		this.serviceTitle = serviceTitle;
+	}
+
+	public String getServiceDescription() {
+		return serviceDescription;
+	}
+
+	public void setServiceDescription(String serviceDescription) {
+		this.serviceDescription = serviceDescription;
 	}
 	
 }
