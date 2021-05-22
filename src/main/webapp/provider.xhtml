@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+
+		<h:form>
+
+			<div class="EmptyBox20"></div>
+			<div class="Wid100 OvHidden BigTopic Fs30"><i class="icon-users Fs40"></i>Mediator Provider</div>
+			<div class="EmptyBox20"></div>
+			<br></br><hr/><br></br>
+			<div class="EmptyBox20"></div>
+			<div class="Wid100 OvHidden BigTopic Fs30"><i class="icon-users Fs40"></i>Provided Services</div>
+			<div class="EmptyBox20"></div>	
+			<br></br><br></br><br></br>
+		    <div class="card">
+		        <p:dataTable var="providedServices" value="#{searchManagedBean.provider.servicesProvided}">
+				    <p:column headerText="Type">
+				        <h:outputText value="#{providedServices.serviceType}" />
+				    </p:column>				  	 
+				    <p:column headerText="Title">
+				        <h:outputText value="#{providedServices.serviceTitle}" />
+				    </p:column>
+				    <p:column headerText="Description">
+				        <h:outputText value="#{providedServices.serviceDescription}" />
+				    </p:column>		 	 
+		        </p:dataTable>
+		    </div>
+
+		</h:form>    
+		    
+	</ui:define>
+
+</ui:composition>
