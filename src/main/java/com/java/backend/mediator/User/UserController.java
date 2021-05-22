@@ -6,6 +6,9 @@ import com.java.backend.mediator.Utility.Utility;
 
 import com.java.backend.mediator.Profile.Profile;
 import com.java.backend.mediator.Profile.ProfileService;
+import com.java.backend.mediator.Provider.Provider;
+import com.java.backend.mediator.Provider.ProviderController;
+import com.java.backend.mediator.Provider.ProviderService;
 import com.java.backend.mediator.ContactInfo.ContactInfo;
 import com.java.backend.mediator.ContactInfo.ContactInfoService;
 
@@ -21,12 +24,14 @@ public class UserController {
     private UserService userService;
 	private ProfileService profileService;
 	private ContactInfoService contactInfoService;
+	private ProviderService providerService;
 	
     @Autowired
-    public UserController(UserService userService, ProfileService profileService, ContactInfoService contactInfoService) {
+    public UserController(UserService userService, ProfileService profileService, ContactInfoService contactInfoService, ProviderService providerService) {
         this.userService = userService;
         this.profileService = profileService;
         this.contactInfoService = contactInfoService;
+        this.providerService = providerService;
     }
 
     @PostMapping(value = "/create", produces = "application/json")
@@ -50,6 +55,11 @@ public class UserController {
     		// whenever a user is being created its contact info is also automatically being created 
     		ContactInfo contactInfo = new ContactInfo(user.getId());
     		user.setContactInfo(contactInfoService.saveContactInfo(contactInfo));
+    		  
+    		// whenever a user of type provider is being created its provider is also automatically being created 
+    		if(user.getUserType().equals(User.UserType.PROVIDER)) {
+    			providerService.saveProvider(new Provider(user.getId()));
+    		}
     		
     		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);        	    		
     		tempUser = userService.saveUser(user);  
