@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.java.backend.mediator.MediatorMessage.MediatorMessage;
 import com.java.backend.mediator.Profile.ProfileService;
+import com.java.backend.mediator.Provider.Provider;
 import com.java.backend.mediator.User.User;
 import com.java.backend.mediator.User.User.UserType;
 import com.java.backend.mediator.User.UserController;
@@ -27,6 +28,8 @@ public class SearchManagedBean {
 	private int email;
 	
 	private User currentUser; // current user session
+	
+	private Provider provider;
 
 	@Autowired
 	UserController userService;
@@ -77,6 +80,14 @@ public class SearchManagedBean {
 
 	public void setCurrentUser(User currentUser) {
 		this.currentUser = currentUser;
+	}
+	
+	public Provider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(Provider provider) {
+		this.provider = provider;
 	}
 	
 }
