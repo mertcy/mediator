@@ -206,6 +206,7 @@ public class ButtonManagedBean implements Serializable{
 	
 	public void onServiceChange() {
 		//TODO document upload change
+		System.out.println("New value: " + service);
 	}
 
 	public void uploadDocument(FileUploadEvent event) {

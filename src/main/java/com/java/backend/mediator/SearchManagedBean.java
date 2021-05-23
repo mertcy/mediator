@@ -15,6 +15,9 @@ import com.java.backend.mediator.Consumer.Consumer;
 import com.java.backend.mediator.MediatorMessage.MediatorMessage;
 import com.java.backend.mediator.Profile.ProfileService;
 import com.java.backend.mediator.Provider.Provider;
+import com.java.backend.mediator.Provider.ProviderController;
+import com.java.backend.mediator.Provider.ProviderService;
+import com.java.backend.mediator.ServiceProvided.ServiceProvided.ServiceType;
 import com.java.backend.mediator.User.User;
 import com.java.backend.mediator.User.User.UserType;
 import com.java.backend.mediator.User.UserController;
@@ -39,9 +42,12 @@ public class SearchManagedBean {
 	@Autowired
 	ProfileService profileService;
 	
+	@Autowired
+	ProviderService providerService;
+	
 	@PostConstruct
 	public void init() {
-		userList = userService.getAllUsers().stream().filter(u->u.userType.equals(UserType.PROVIDER)).collect(Collectors.toList());
+		userList = userService.getAllUsers().stream().filter(u->u.getUserType().equals(UserType.PROVIDER)).collect(Collectors.toList());
 		emptyCurrentUserSession();
 	}
 	
@@ -52,6 +58,23 @@ public class SearchManagedBean {
 		currentUser = user;
 	}
 
+	public String getFilteredUserList(String service) {
+		userList = userService.getAllUsers().stream().filter(u->u.getUserType().equals(UserType.PROVIDER)).collect(Collectors.toList());
+		List<Provider> providerList = providerService.findProviders(userList.stream().map(u->u.getId()).collect(Collectors.toList()));
+		userList.clear();
+		for(Provider p : providerList) {
+			if(p.getServicesProvided().stream().anyMatch(s->s.getServiceType().name().equals(service))) {
+				userList.add(userService.getUser(p.getId()));
+			}
+		}
+		return "consumer.xhtml";
+	}
+	
+	public String clearFilter() {
+		userList = userService.getAllUsers().stream().filter(u->u.getUserType().equals(UserType.PROVIDER)).collect(Collectors.toList());
+		return "consumer.xhtml";
+	}
+	
 	public List<User> getUserList() {
 		return userList;
 	}

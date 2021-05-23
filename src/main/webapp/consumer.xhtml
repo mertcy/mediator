@@ -7,18 +7,24 @@
 
     <ui:define name="content">
 <h:form>
-
-<p:dataTable id="xs" var="user" value="#{searchManagedBean.userList}">
-
-    <p:column headerText="User Name">
-        <h:outputText value="#{user.userName}" />
-    </p:column>
- 
-    <p:column headerText="Email">
-        <h:outputText value="#{user.email}" />
-    </p:column>
-
-</p:dataTable>
+	<p:dataTable id="xs" var="user" scrollable="true" scrollHeight="355" value="#{searchManagedBean.userList}">
+		<p:column headerText="User Name">
+	        <h:outputText value="#{user.userName}" />
+	    </p:column>
+	 	<p:column headerText="Email">
+	        <h:outputText value="#{user.email}" />
+	    </p:column>
+	</p:dataTable>
+	<h:panelGrid columns="3" cellpadding="30">
+		<p:selectOneMenu id="service" value="#{buttonManagedBean.service}" style="width:150px">
+			<p:ajax listener="#{buttonManagedBean.onServiceChange()}"/>
+			<f:selectItem itemLabel="Select a service" itemValue="" noSelectionOption="true"/>
+			<f:selectItems value="#{buttonManagedBean.services}"/>
+		</p:selectOneMenu>
+		<p:commandButton value="Filter Service" ajax="false" action="#{searchManagedBean.getFilteredUserList(buttonManagedBean.service)}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>
+		<p:commandButton value="Clear Filter" ajax="false" action="#{searchManagedBean.clearFilter}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>
+	</h:panelGrid>
+	<div class="EmptyBox20"></div>
 </h:form>        
     </ui:define>
 

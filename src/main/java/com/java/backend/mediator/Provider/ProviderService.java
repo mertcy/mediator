@@ -1,5 +1,7 @@
 package com.java.backend.mediator.Provider;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,10 @@ public class ProviderService {
 
     public Provider saveProvider(Provider provider) {
         return providerRepository.save(provider);
+    }
+    
+    public List<Provider> findProviders(List<String> ids){
+    	return providerRepository.findByIdIn(ids);
     }
 
 }
