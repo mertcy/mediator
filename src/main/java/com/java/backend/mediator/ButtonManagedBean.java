@@ -19,6 +19,7 @@ import org.primefaces.model.file.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.java.backend.mediator.Consumer.ConsumerController;
 import com.java.backend.mediator.ContactInfo.ContactInfo;
 import com.java.backend.mediator.ContactInfo.ContactInfoController;
 import com.java.backend.mediator.Document.Document;
@@ -61,6 +62,9 @@ public class ButtonManagedBean implements Serializable{
 	ProviderController providerService;
 	
 	@Autowired
+	ConsumerController consumerService;
+	
+	@Autowired
 	SearchManagedBean searchManagedBean;
 	
 	public String username;
@@ -94,6 +98,8 @@ public class ButtonManagedBean implements Serializable{
 					searchManagedBean.setCurrentUser(userService.getUser(user.get().getId()));
 					
 		 			if(user.get().getUserType().equals(User.UserType.CONSUMER)) {
+		 				searchManagedBean.setConsumer(consumerService.getConsumer(searchManagedBean.getCurrentUser().getId()));
+		 				
 		 				return "consumer.xhtml";
 		 			} else if(user.get().getUserType().equals(User.UserType.PROVIDER)) {				
 		 				searchManagedBean.setProvider(providerService.getProvider(searchManagedBean.getCurrentUser().getId()));
@@ -134,7 +140,9 @@ public class ButtonManagedBean implements Serializable{
 			// set current user session
 			searchManagedBean.setCurrentUser(signupUser);
 
- 			if(signupUser.getUserType().equals(User.UserType.CONSUMER)) {
+ 			if(signupUser.getUserType().equals(User.UserType.CONSUMER)) {				
+ 				searchManagedBean.setConsumer(consumerService.getConsumer(searchManagedBean.getCurrentUser().getId()));
+ 				
  				return "consumer.xhtml";
  			} else if(signupUser.getUserType().equals(User.UserType.PROVIDER)) {
  				

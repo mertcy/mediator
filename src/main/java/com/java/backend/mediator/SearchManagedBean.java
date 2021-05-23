@@ -11,6 +11,7 @@ import javax.faces.bean.RequestScoped;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.java.backend.mediator.Consumer.Consumer;
 import com.java.backend.mediator.MediatorMessage.MediatorMessage;
 import com.java.backend.mediator.Profile.ProfileService;
 import com.java.backend.mediator.Provider.Provider;
@@ -30,6 +31,7 @@ public class SearchManagedBean {
 	private User currentUser; // current user session
 	
 	private Provider provider;
+	private Consumer consumer;
 
 	@Autowired
 	UserController userService;
@@ -88,6 +90,14 @@ public class SearchManagedBean {
 
 	public void setProvider(Provider provider) {
 		this.provider = provider;
+	}
+	
+	public Consumer getConsumer() {
+		return consumer;
+	}
+
+	public void setConsumer(Consumer consumer) {
+		this.consumer = consumer;
 	}
 	
 }

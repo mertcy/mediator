@@ -7,8 +7,9 @@ import com.java.backend.mediator.Utility.Utility;
 import com.java.backend.mediator.Profile.Profile;
 import com.java.backend.mediator.Profile.ProfileService;
 import com.java.backend.mediator.Provider.Provider;
-import com.java.backend.mediator.Provider.ProviderController;
 import com.java.backend.mediator.Provider.ProviderService;
+import com.java.backend.mediator.Consumer.Consumer;
+import com.java.backend.mediator.Consumer.ConsumerService;
 import com.java.backend.mediator.ContactInfo.ContactInfo;
 import com.java.backend.mediator.ContactInfo.ContactInfoService;
 
@@ -25,13 +26,15 @@ public class UserController {
 	private ProfileService profileService;
 	private ContactInfoService contactInfoService;
 	private ProviderService providerService;
+	private ConsumerService consumerService;
 	
     @Autowired
-    public UserController(UserService userService, ProfileService profileService, ContactInfoService contactInfoService, ProviderService providerService) {
+    public UserController(UserService userService, ProfileService profileService, ContactInfoService contactInfoService, ProviderService providerService, ConsumerService consumerService) {
         this.userService = userService;
         this.profileService = profileService;
         this.contactInfoService = contactInfoService;
         this.providerService = providerService;
+        this.consumerService = consumerService;
     }
 
     @PostMapping(value = "/create", produces = "application/json")
@@ -59,7 +62,10 @@ public class UserController {
     		// whenever a user of type provider is being created its provider is also automatically being created 
     		if(user.getUserType().equals(User.UserType.PROVIDER)) {
     			providerService.saveProvider(new Provider(user.getId()));
-    		}
+    		} else if(user.getUserType().equals(User.UserType.CONSUMER)) {
+    			// whenever a user of type consumer is being created its consumer is also automatically being created 
+    			consumerService.saveConsumer(new Consumer(user.getId()));
+    		}  
     		
     		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);        	    		
     		tempUser = userService.saveUser(user);  
