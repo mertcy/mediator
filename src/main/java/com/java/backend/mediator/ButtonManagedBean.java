@@ -9,30 +9,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.file.UploadedFile;
-import org.primefaces.model.file.UploadedFiles;
-import org.primefaces.shaded.json.JSONObject;
-import org.primefaces.shaded.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.TreeNode;
 import com.java.backend.mediator.ContactInfo.ContactInfo;
 import com.java.backend.mediator.ContactInfo.ContactInfoController;
 import com.java.backend.mediator.Document.Document;
 import com.java.backend.mediator.Document.Document.DocumentType;
+import com.java.backend.mediator.MediatorMessage.MediatorMessage;
 import com.java.backend.mediator.Profile.Profile;
 import com.java.backend.mediator.Profile.ProfileController;
 import com.java.backend.mediator.Profile.ProfileService;
@@ -142,14 +133,23 @@ public class ButtonManagedBean implements Serializable{
 			
 			// set current user session
 			searchManagedBean.setCurrentUser(signupUser);
-			
- 			clearall();
- 			
+
  			if(signupUser.getUserType().equals(User.UserType.CONSUMER)) {
  				return "consumer.xhtml";
  			} else if(signupUser.getUserType().equals(User.UserType.PROVIDER)) {
  				
+ 				ServiceProvided serviceProvided = new ServiceProvided();
+ 				
+ 				serviceProvided.setServiceType(ServiceProvided.ServiceType.valueOf(service));
+	 			serviceProvided.setServiceTitle(MediatorMessage.STATUS_NOTAVAILABLE);
+	 			serviceProvided.setServiceDescription(MediatorMessage.STATUS_NOTAVAILABLE);
+ 				
+ 				Provider provider = providerService.getProvider(searchManagedBean.getCurrentUser().getId());				
+ 				providerService.saveServiceProvided(provider.getId(), serviceProvided); 				
+ 				
  				searchManagedBean.setProvider(providerService.getProvider(searchManagedBean.getCurrentUser().getId()));
+ 				
+ 				clearall();
  				
  				return "provider.xhtml";
  			}
