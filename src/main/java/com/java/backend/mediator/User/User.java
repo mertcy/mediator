@@ -2,9 +2,11 @@ package com.java.backend.mediator.User;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.java.backend.mediator.Consumer.Consumer;
 import com.java.backend.mediator.ContactInfo.ContactInfo;
 import com.java.backend.mediator.Model.Model;
 import com.java.backend.mediator.Profile.Profile;
+import com.java.backend.mediator.Provider.Provider;
 
 import org.springframework.data.annotation.Transient;
 
@@ -29,6 +31,10 @@ public class User extends Model {
 	public ContactInfo contactInfo;
 	
 	public Profile profile;
+	
+	public Consumer consumer;
+	
+	public Provider provider;
 
 	public User() {
 		super();
@@ -93,6 +99,22 @@ public class User extends Model {
 
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+	}
+
+	public Consumer getConsumer() {
+		return consumer;
+	}
+
+	public void setConsumer(Consumer consumer) {
+		this.consumer = consumer;
+	}
+
+	public Provider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(Provider provider) {
+		this.provider = provider;
 	}
     
 }

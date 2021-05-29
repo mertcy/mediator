@@ -172,7 +172,7 @@ public class ButtonManagedBean implements Serializable{
 			contact.setTelephoneNumber(phoneNumber);
 			contact.setId(signupUser.getId());	
 			signupUser.setContactInfo(contact);
-			signupUser = userService.saveUser(signupUser);
+			signupUser = userService.createUser(signupUser);
 			
 			// set current user session
 			searchManagedBean.setCurrentUser(signupUser);
@@ -193,7 +193,8 @@ public class ButtonManagedBean implements Serializable{
  				}
  				
  				Provider provider = providerService.getProvider(searchManagedBean.getCurrentUser().getId());				
- 				providerService.saveServiceProvided(provider.getId(), serviceProvided); 				
+ 				signupUser.setProvider(providerService.saveServiceProvided(provider.getId(), serviceProvided)); 
+ 				userService.saveUser(signupUser);
  				
  				searchManagedBean.setProvider(providerService.getProvider(searchManagedBean.getCurrentUser().getId()));
  				

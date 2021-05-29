@@ -61,10 +61,10 @@ public class UserController {
     		  
     		// whenever a user of type provider is being created its provider is also automatically being created 
     		if(user.getUserType().equals(User.UserType.PROVIDER)) {
-    			providerService.saveProvider(new Provider(user.getId()));
+    			user.setProvider(providerService.saveProvider(new Provider(user.getId())));
     		} else if(user.getUserType().equals(User.UserType.CONSUMER)) {
     			// whenever a user of type consumer is being created its consumer is also automatically being created 
-    			consumerService.saveConsumer(new Consumer(user.getId()));
+    			user.setConsumer(consumerService.saveConsumer(new Consumer(user.getId())));
     		}  
     		
     		user.setMessage(User.DISCRIMINATOR +  MediatorMessage.CRUD_SUCCESS + MediatorMessage.CRUD_CREATE + MediatorMessage.END_MESSAGE);        	    		
