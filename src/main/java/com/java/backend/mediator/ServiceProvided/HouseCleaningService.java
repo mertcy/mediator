@@ -2,10 +2,15 @@ package com.java.backend.mediator.ServiceProvided;
 
 import java.math.BigDecimal;
 
+import org.springframework.data.annotation.Transient;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.java.backend.mediator.MediatorMessage.MediatorMessage;
 
 public class HouseCleaningService extends ServiceProvided {
+	
+	@Transient
+	public static final String DISCRIMINATOR = "HouseCleaningService";
 	
 	@JsonProperty("totalAreaM2")
     private BigDecimal totalAreaM2;

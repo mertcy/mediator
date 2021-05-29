@@ -2,11 +2,16 @@ package com.java.backend.mediator.ServiceProvided;
 
 import java.math.BigDecimal;
 
+import org.springframework.data.annotation.Transient;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CareService extends ServiceProvided {
     
+	@Transient
+	public static final String DISCRIMINATOR = "CareService";
+	
 	@JsonProperty("caredAge")
 	private BigDecimal caredAge;
 

@@ -12,14 +12,14 @@ import com.java.backend.mediator.Model.Model;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({ 
-	@Type(value = CareService.class, name = "CareService"), 
-	@Type(value = DogWalkerService.class, name = "DogWalkerService"),
-	@Type(value = HouseCleaningService.class, name = "HouseCleaningService"),
+	@Type(value = CareService.class, name = CareService.DISCRIMINATOR), 
+	@Type(value = DogWalkerService.class, name = DogWalkerService.DISCRIMINATOR),
+	@Type(value = HouseCleaningService.class, name = HouseCleaningService.DISCRIMINATOR),
 })
 public class ServiceProvided extends Model {
 	
 	@Transient
-	public static final String DISCRIMINATOR = "ServiceProvidedEntity";
+	public static final String DISCRIMINATOR = "ServiceProvided";
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	@JsonProperty("serviceType")

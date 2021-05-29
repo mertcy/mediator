@@ -1,10 +1,15 @@
 package com.java.backend.mediator.ServiceProvided;
 
+import org.springframework.data.annotation.Transient;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DogWalkerService extends ServiceProvided {
-    
+
+	@Transient
+	public static final String DISCRIMINATOR = "DogWalkerService";
+	
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	@JsonProperty("dogBreed")
 	public DogBreed dogBreed;
