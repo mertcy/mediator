@@ -30,7 +30,7 @@ public class HouseCleaningService extends ServiceProvided {
 	@JsonProperty("containsPet")
 	private boolean containsPet;
 	
-	@JsonProperty("isLocationOutOfTown")
+	@JsonProperty("district")
 	private String district;	
     
     public HouseCleaningService() {
