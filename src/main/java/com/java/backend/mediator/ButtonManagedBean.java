@@ -24,12 +24,14 @@ import com.java.backend.mediator.ContactInfo.ContactInfo;
 import com.java.backend.mediator.ContactInfo.ContactInfoController;
 import com.java.backend.mediator.Document.Document;
 import com.java.backend.mediator.Document.Document.DocumentType;
-import com.java.backend.mediator.MediatorMessage.MediatorMessage;
 import com.java.backend.mediator.Profile.Profile;
 import com.java.backend.mediator.Profile.ProfileController;
 import com.java.backend.mediator.Profile.ProfileService;
 import com.java.backend.mediator.Provider.Provider;
 import com.java.backend.mediator.Provider.ProviderController;
+import com.java.backend.mediator.ServiceProvided.DogWalkerService;
+import com.java.backend.mediator.ServiceProvided.CareService;
+import com.java.backend.mediator.ServiceProvided.HouseCleaningService;
 import com.java.backend.mediator.ServiceProvided.ServiceProvided;
 import com.java.backend.mediator.User.User;
 import com.java.backend.mediator.User.User.UserType;
@@ -146,11 +148,14 @@ public class ButtonManagedBean implements Serializable{
  				return "consumer.xhtml";
  			} else if(signupUser.getUserType().equals(User.UserType.PROVIDER)) {
  				
- 				ServiceProvided serviceProvided = new ServiceProvided();
- 				
- 				serviceProvided.setServiceType(ServiceProvided.ServiceType.valueOf(service));
-	 			serviceProvided.setServiceTitle(MediatorMessage.STATUS_NOTAVAILABLE);
-	 			serviceProvided.setServiceDescription(MediatorMessage.STATUS_NOTAVAILABLE);
+ 				ServiceProvided serviceProvided = new ServiceProvided(); 				
+ 				if(service.equals(ServiceProvided.ServiceType.CARE_SERVICE.toString())) {
+ 					serviceProvided = new CareService();
+ 				} else if(service.equals(ServiceProvided.ServiceType.DOG_WALKER_SERVICE.toString())) {
+ 					serviceProvided = new DogWalkerService();
+ 				} else if(service.equals(ServiceProvided.ServiceType.HOUSE_CLEANING_SERVICE.toString())) {
+ 					serviceProvided = new HouseCleaningService();
+ 				}
  				
  				Provider provider = providerService.getProvider(searchManagedBean.getCurrentUser().getId());				
  				providerService.saveServiceProvided(provider.getId(), serviceProvided); 				
