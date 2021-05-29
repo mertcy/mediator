@@ -15,14 +15,11 @@ public class HouseCleaningService extends ServiceProvided {
 	@JsonProperty("totalAreaM2")
     private BigDecimal totalAreaM2;
 	
-	@JsonProperty("totalRoomAmount")
-    private BigDecimal totalRoomAmount;
+	@JsonProperty("maxRoomNumber")
+    private BigDecimal maxRoomNumber;
 	
-	@JsonProperty("totalWindowAmount")
-    private BigDecimal totalWindowAmount;
-	
-	@JsonProperty("totalWindowedRoomAmount")
-    private BigDecimal totalWindowedRoomAmount;
+	@JsonProperty("maxWindowNumber")
+    private BigDecimal maxWindowNumber;
 	
 	@JsonProperty("roomHeightCm")
     private BigDecimal roomHeightCm;
@@ -36,12 +33,22 @@ public class HouseCleaningService extends ServiceProvided {
     public HouseCleaningService() {
     	super(ServiceType.HOUSE_CLEANING_SERVICE);
     	totalAreaM2 = BigDecimal.ONE;
-    	totalRoomAmount = BigDecimal.ZERO;
-    	totalWindowAmount = BigDecimal.ZERO;
-    	totalWindowedRoomAmount = BigDecimal.ZERO;
+    	maxRoomNumber = BigDecimal.ZERO;
+    	maxWindowNumber = BigDecimal.ZERO;
     	roomHeightCm = BigDecimal.ONE; 
     	containsPet = false;
     	district = MediatorMessage.STATUS_NOTAVAILABLE;
+    }
+    
+    public HouseCleaningService(BigDecimal totalAreaM2, BigDecimal maxRoomNumber, BigDecimal maxWindowNumber, 
+    									BigDecimal roomHeightCm, boolean containsPet, String district ) {
+    	super(ServiceType.HOUSE_CLEANING_SERVICE);
+    	this.totalAreaM2 = totalAreaM2;
+    	this.maxRoomNumber = maxRoomNumber;
+    	this.maxWindowNumber = maxWindowNumber;
+    	this.roomHeightCm = roomHeightCm; 
+    	this.containsPet = containsPet;
+    	this.district = district;
     }
 
     public BigDecimal getTotalAreaM2() {
@@ -53,27 +60,19 @@ public class HouseCleaningService extends ServiceProvided {
 	}
 
 	public BigDecimal getTotalRoomAmount() {
-		return totalRoomAmount;
+		return maxRoomNumber;
 	}
 
 	public void setTotalRoomAmount(BigDecimal totalRoomAmount) {
-		this.totalRoomAmount = totalRoomAmount;
+		this.maxRoomNumber = totalRoomAmount;
 	}
 
 	public BigDecimal getTotalWindowAmount() {
-		return totalWindowAmount;
+		return maxWindowNumber;
 	}
 
 	public void setTotalWindowAmount(BigDecimal totalWindowAmount) {
-		this.totalWindowAmount = totalWindowAmount;
-	}
-
-	public BigDecimal getTotalWindowedRoomAmount() {
-		return totalWindowedRoomAmount;
-	}
-
-	public void setTotalWindowedRoomAmount(BigDecimal totalWindowedRoomAmount) {
-		this.totalWindowedRoomAmount = totalWindowedRoomAmount;
+		this.maxWindowNumber = totalWindowAmount;
 	}
 
 	public BigDecimal getRoomHeightCm() {

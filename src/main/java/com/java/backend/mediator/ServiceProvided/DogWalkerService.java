@@ -113,6 +113,18 @@ public class DogWalkerService extends ServiceProvided {
         this.dogTrainability = DogTrainability.NOT_AVAILABLE;
     }
 	
+	public DogWalkerService(DogBreed dogBreed, DogActivityLevel activityLevel, DogBarkingLevel barkingLevel, 
+			DogCoatType coatType, DogShedding sheeding, DogSize size, DogTrainability trainability) {
+    	super(ServiceType.DOG_WALKER_SERVICE);
+        this.dogBreed = dogBreed;
+        this.dogActivityLevel = activityLevel;
+        this.dogBarkingLevel = barkingLevel;
+        this.dogCoatType = coatType;
+        this.dogShedding = sheeding;
+        this.dogSize = size;
+        this.dogTrainability = trainability;
+    }
+	
     public DogBreed getDogBreed() {
 		return dogBreed;
 	}

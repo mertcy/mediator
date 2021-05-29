@@ -31,7 +31,16 @@ import com.java.backend.mediator.Profile.ProfileService;
 import com.java.backend.mediator.Provider.Provider;
 import com.java.backend.mediator.Provider.ProviderController;
 import com.java.backend.mediator.ServiceProvided.DogWalkerService;
+import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogActivityLevel;
+import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogBarkingLevel;
+import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogBreed;
+import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogCoatType;
+import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogShedding;
+import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogSize;
+import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogTrainability;
 import com.java.backend.mediator.ServiceProvided.CareService;
+import com.java.backend.mediator.ServiceProvided.CareService.CaredPlace;
+import com.java.backend.mediator.ServiceProvided.CareService.CaredType;
 import com.java.backend.mediator.ServiceProvided.HouseCleaningService;
 import com.java.backend.mediator.ServiceProvided.ServiceProvided;
 import com.java.backend.mediator.User.User;
@@ -118,9 +127,8 @@ public class ButtonManagedBean implements Serializable{
 	private Map<String, String> dogTrainabilities;
 	
 	private BigDecimal totalAreaM2;
-	private BigDecimal totalRoomAmount;
-	private BigDecimal totalWindowAmount;
-	private BigDecimal totalWindowedRoomAmount;
+	private BigDecimal maxRoomNumber;
+	private BigDecimal maxWindowNumber;
 	private BigDecimal roomHeightCm;
 	private boolean containsPet;
 	private String district;
@@ -185,11 +193,17 @@ public class ButtonManagedBean implements Serializable{
  				
  				ServiceProvided serviceProvided = new ServiceProvided(); 				
  				if(service.equals(ServiceProvided.ServiceType.CARE_SERVICE.toString())) {
- 					serviceProvided = new CareService();
+ 					serviceProvided = new CareService(caredAge, CaredType.valueOf(caredType), CaredPlace.valueOf(caredPlace));
  				} else if(service.equals(ServiceProvided.ServiceType.DOG_WALKER_SERVICE.toString())) {
- 					serviceProvided = new DogWalkerService();
+ 					serviceProvided = new DogWalkerService(DogBreed.valueOf(dogBreed),
+						 							DogActivityLevel.valueOf(dogActivityLevel),
+						 							DogBarkingLevel.valueOf(dogBarkingLevel),
+						 							DogCoatType.valueOf(dogCoatType),
+						 							DogShedding.valueOf(dogShedding),
+						 							DogSize.valueOf(dogSize),
+						 							DogTrainability.valueOf(dogTrainability));
  				} else if(service.equals(ServiceProvided.ServiceType.HOUSE_CLEANING_SERVICE.toString())) {
- 					serviceProvided = new HouseCleaningService();
+ 					serviceProvided = new HouseCleaningService(totalAreaM2, maxRoomNumber, maxWindowNumber, roomHeightCm, containsPet, district);
  				}
  				
  				Provider provider = providerService.getProvider(searchManagedBean.getCurrentUser().getId());				
@@ -685,28 +699,20 @@ public class ButtonManagedBean implements Serializable{
 		this.totalAreaM2 = totalAreaM2;
 	}
 
-	public BigDecimal getTotalRoomAmount() {
-		return totalRoomAmount;
+	public BigDecimal getMaxRoomNumber() {
+		return maxRoomNumber;
 	}
 
-	public void setTotalRoomAmount(BigDecimal totalRoomAmount) {
-		this.totalRoomAmount = totalRoomAmount;
+	public void setMaxRoomNumber(BigDecimal maxRoomNumber) {
+		this.maxRoomNumber = maxRoomNumber;
 	}
 
-	public BigDecimal getTotalWindowAmount() {
-		return totalWindowAmount;
+	public BigDecimal getMaxWindowNumber() {
+		return maxWindowNumber;
 	}
 
-	public void setTotalWindowAmount(BigDecimal totalWindowAmount) {
-		this.totalWindowAmount = totalWindowAmount;
-	}
-
-	public BigDecimal getTotalWindowedRoomAmount() {
-		return totalWindowedRoomAmount;
-	}
-
-	public void setTotalWindowedRoomAmount(BigDecimal totalWindowedRoomAmount) {
-		this.totalWindowedRoomAmount = totalWindowedRoomAmount;
+	public void setMaxWindowNumber(BigDecimal maxWindowNumber) {
+		this.maxWindowNumber = maxWindowNumber;
 	}
 
 	public BigDecimal getRoomHeightCm() {

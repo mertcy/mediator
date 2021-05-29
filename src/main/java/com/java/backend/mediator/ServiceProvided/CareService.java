@@ -44,6 +44,13 @@ public class CareService extends ServiceProvided {
         this.caredType = CaredType.NOT_AVAILABLE;
     }
     
+    public CareService(BigDecimal caredAge, CaredType caredType, CaredPlace caredPlace) {
+    	super(ServiceType.CARE_SERVICE);
+        this.caredAge = caredAge;
+        this.caredPlace = caredPlace;
+        this.caredType = caredType;
+    }
+    
 	public BigDecimal getCaredAge() {
 		return caredAge;
 	}

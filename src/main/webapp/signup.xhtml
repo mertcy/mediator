@@ -60,6 +60,7 @@
 				            <f:selectItem itemLabel="Consumer" itemValue="Consumer" />
 				            <f:selectItem itemLabel="Provider" itemValue="Provider" />
 				            <p:ajax update="selectServiceContainer" />
+				            <p:ajax update="serviceContainer" />
 				        </p:selectOneRadio>
 				    </h:panelGrid>
 				    <h:panelGroup id="selectServiceContainer" layout="block">
@@ -74,16 +75,14 @@
 			            </h:panelGrid>
 		            </h:panelGroup>
 		            <h:panelGroup id="serviceContainer" layout="block">
-		            	<h:panelGrid columns="2" cellpadding="5" id="cleaningServiceDetail" rendered="#{buttonManagedBean.service eq 'HOUSE_CLEANING_SERVICE'}">
+		            	<h:panelGrid columns="2" cellpadding="5" id="cleaningServiceDetail" rendered="#{buttonManagedBean.service eq 'HOUSE_CLEANING_SERVICE' and userType.value eq 'Provider'}">
 			               <h:panelGrid columns="1" cellpadding="5" id="cleaningDetail">
 			          
                 			<p:inputNumber placeholder="Total Area(m2)" id="totalAreaM2" value="#{buttonManagedBean.totalAreaM2}"/>
                 			<div class="EmptyBox10"></div>
-                			<p:inputNumber placeholder="Room Number" id="totalRoomAmount" value="#{buttonManagedBean.totalRoomAmount}"/>
+                			<p:inputNumber placeholder="Max Room Number" id="maxRoomNumber" value="#{buttonManagedBean.maxRoomNumber}"/>
                 			<div class="EmptyBox10"></div>
-                			<p:inputNumber placeholder="Window Number" id="totalWindowAmount" value="#{buttonManagedBean.totalWindowAmount}"/>
-                			<div class="EmptyBox10"></div>
-                			<p:inputNumber placeholder="Windowed Room Number" id="totalWindowedRoomAmount" value="#{buttonManagedBean.totalWindowedRoomAmount}"/>
+                			<p:inputNumber placeholder="Max Window Number" id="maxWindowNumber" value="#{buttonManagedBean.maxWindowNumber}"/>
                 			<div class="EmptyBox10"></div>
                 			<p:inputNumber placeholder="Room Height(cm)" id="roomHeightCm" value="#{buttonManagedBean.roomHeightCm}"/>
                 			<div class="EmptyBox10"></div>
@@ -97,7 +96,7 @@
 				    		</h:panelGrid>
 			            </h:panelGrid>
 			            </h:panelGrid>
-			            <h:panelGrid columns="2" cellpadding="20" id="careServiceDetail" rendered="#{buttonManagedBean.service eq 'CARE_SERVICE'}">
+			            <h:panelGrid columns="2" cellpadding="20" id="careServiceDetail" rendered="#{buttonManagedBean.service eq 'CARE_SERVICE' and userType.value eq 'Provider'}">
 			               <h:panelGrid columns="2" cellpadding="20" id="careDetail">
 			               <p:outputLabel for="caredAge" value="Cared Age: "/>
                 			<p:inputNumber id="caredAge" value="#{buttonManagedBean.caredAge}"/>
@@ -113,7 +112,7 @@
 			                </p:selectOneMenu>
 			            </h:panelGrid>
 			            </h:panelGrid>
-			            <h:panelGrid columns="2" cellpadding="10" id="dogWalkerServiceDetail" rendered="#{buttonManagedBean.service eq 'DOG_WALKER_SERVICE'}">
+			            <h:panelGrid columns="2" cellpadding="10" id="dogWalkerServiceDetail" rendered="#{buttonManagedBean.service eq 'DOG_WALKER_SERVICE' and userType.value eq 'Provider'}">
 			               <h:panelGrid columns="2" cellpadding="10" id="dogWalkerDetail">
 			                <p:outputLabel for="dogBreed" value="Dog Breed: "/>
 			                <p:selectOneMenu id="dogBreed" value="#{buttonManagedBean.dogBreed}" style="width:150px">
