@@ -31,9 +31,6 @@ public class HouseCleaningService extends ServiceProvided {
 	private boolean containsPet;
 	
 	@JsonProperty("isLocationOutOfTown")
-	private boolean isLocationOutOfTown;
-	
-	@JsonProperty("isLocationOutOfTown")
 	private String district;	
     
     public HouseCleaningService() {
@@ -44,7 +41,6 @@ public class HouseCleaningService extends ServiceProvided {
     	totalWindowedRoomAmount = BigDecimal.ZERO;
     	roomHeightCm = BigDecimal.ONE; 
     	containsPet = false;
-    	isLocationOutOfTown = false;
     	district = MediatorMessage.STATUS_NOTAVAILABLE;
     }
 
@@ -94,14 +90,6 @@ public class HouseCleaningService extends ServiceProvided {
 
 	public void setContainsPet(boolean containsPet) {
 		this.containsPet = containsPet;
-	}
-
-	public boolean isLocationOutOfTown() {
-		return isLocationOutOfTown;
-	}
-
-	public void setLocationOutOfTown(boolean isLocationOutOfTown) {
-		this.isLocationOutOfTown = isLocationOutOfTown;
 	}
 
 	public String getDistrict() {

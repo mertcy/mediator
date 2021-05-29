@@ -44,7 +44,8 @@ public class DogWalkerService extends ServiceProvided {
 		LABRADOR_RETRIEVER,
 		GOLDEN_RETRIEVER,
 		BULLDOG,
-		PITBULL
+		PITBULL,
+		MIX
 	}
 
 	public enum DogActivityLevel {

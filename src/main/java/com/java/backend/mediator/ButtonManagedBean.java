@@ -96,6 +96,35 @@ public class ButtonManagedBean implements Serializable{
 
 	private Map<String, String> caredTypes;
 
+	private String dogBreed;
+	private String dogActivityLevel;
+	private String dogBarkingLevel;
+	private String dogCoatType;
+	private String dogShedding;
+	private String dogSize;
+	private String dogTrainability;
+	private Map<String, String> dogBreeds;
+
+	private Map<String, String> dogActivityLevels;
+
+	private Map<String, String> dogBarkingLevels;
+
+	private Map<String, String> dogCoatTypes;
+
+	private Map<String, String> dogSheddings;
+
+	private Map<String, String> dogSizes;
+
+	private Map<String, String> dogTrainabilities;
+	
+	private BigDecimal totalAreaM2;
+	private BigDecimal totalRoomAmount;
+	private BigDecimal totalWindowAmount;
+	private BigDecimal totalWindowedRoomAmount;
+	private BigDecimal roomHeightCm;
+	private boolean containsPet;
+	private String district;
+
 	public String login() {
 		try {
 			List<User> users = userService.getAllUsers();
@@ -267,28 +296,99 @@ public class ButtonManagedBean implements Serializable{
     }
 	
 	public ButtonManagedBean() {
-		services  = new HashMap<String, String>();
-        services.put("Health Care", ServiceProvided.ServiceType.CARE_SERVICE.toString());
-        services.put("House Cleaning", ServiceProvided.ServiceType.HOUSE_CLEANING_SERVICE.toString());
-        services.put("Dog Walker", ServiceProvided.ServiceType.DOG_WALKER_SERVICE.toString());
-        
-        caredPlaces = new HashMap<String, String>();
-        caredPlaces.put("Not Available", CareService.CaredPlace.NOT_AVAILABLE.toString());
-        caredPlaces.put("Nursing Home", CareService.CaredPlace.NURSING_HOME.toString());
-        caredPlaces.put("Descendant House", CareService.CaredPlace.DESCENDANT_HOUSE.toString());
-        caredPlaces.put("Own House", CareService.CaredPlace.OWN_HOUSE.toString());
-        
-        caredTypes = new HashMap<String, String>();
-        caredTypes.put("Not Available", CareService.CaredType.NOT_AVAILABLE.toString());
-        caredTypes.put("Nursing Home", CareService.CaredType.INFANT.toString());
-        caredTypes.put("Descendant House", CareService.CaredType.ADULT.toString());
-        caredTypes.put("Own House", CareService.CaredType.OLD.toString());
-        
         documents = new HashMap<String, String>();
         documents.put(Document.DocumentType.DIPLOMA.toString(), Document.DocumentType.DIPLOMA.toString());
         documents.put(Document.DocumentType.DOG_TRAINING_CERTIFICATE.toString(), Document.DocumentType.DOG_TRAINING_CERTIFICATE.toString());
         documents.put(Document.DocumentType.JUDICIAL_RECORD.toString(), Document.DocumentType.JUDICIAL_RECORD.toString());
         documents.put(Document.DocumentType.WORK_PERMIT_CERTIFICATE.toString(), Document.DocumentType.WORK_PERMIT_CERTIFICATE.toString());
+        initServiceSection();
+        initCareSection();
+        initDogWalkerSection();
+	}
+	
+	private void initServiceSection() {
+		
+		services  = new HashMap<String, String>();
+		services.put("Health Care", ServiceProvided.ServiceType.CARE_SERVICE.toString());
+		services.put("House Cleaning", ServiceProvided.ServiceType.HOUSE_CLEANING_SERVICE.toString());
+		services.put("Dog Walker", ServiceProvided.ServiceType.DOG_WALKER_SERVICE.toString());	
+		
+	}
+
+	private void initCareSection() {
+		
+		caredPlaces = new HashMap<String, String>();
+		caredPlaces.put("Not Available", CareService.CaredPlace.NOT_AVAILABLE.toString());
+		caredPlaces.put("Nursing Home", CareService.CaredPlace.NURSING_HOME.toString());
+		caredPlaces.put("Descendant House", CareService.CaredPlace.DESCENDANT_HOUSE.toString());
+		caredPlaces.put("Own House", CareService.CaredPlace.OWN_HOUSE.toString());
+		
+		caredTypes = new HashMap<String, String>();
+		caredTypes.put("Not Available", CareService.CaredType.NOT_AVAILABLE.toString());
+		caredTypes.put("Infant", CareService.CaredType.INFANT.toString());
+		caredTypes.put("Adult", CareService.CaredType.ADULT.toString());
+		caredTypes.put("Old", CareService.CaredType.OLD.toString());
+		
+	}
+	private void initDogWalkerSection() {
+		
+		dogBreeds = new HashMap<String, String>();
+		dogBreeds.put("Bulldog", DogWalkerService.DogBreed.BULLDOG.toString());
+		dogBreeds.put("Chihuava", DogWalkerService.DogBreed.CHIHUAHUA.toString());
+		dogBreeds.put("Golden Retriever", DogWalkerService.DogBreed.GOLDEN_RETRIEVER.toString());
+		dogBreeds.put("Labrador Retriever", DogWalkerService.DogBreed.LABRADOR_RETRIEVER.toString());
+		dogBreeds.put("Pitbull", DogWalkerService.DogBreed.PITBULL.toString());
+		dogBreeds.put("Pitbull", DogWalkerService.DogBreed.MIX.toString());
+		dogBreeds.put("Not Available", DogWalkerService.DogBreed.NOT_AVAILABLE.toString());
+		
+		dogActivityLevels = new HashMap<String, String>();
+		dogActivityLevels.put("Calm", DogWalkerService.DogActivityLevel.CALM.toString());
+		dogActivityLevels.put("Energetic", DogWalkerService.DogActivityLevel.ENERGETIC.toString());
+		dogActivityLevels.put("Needs Lots of Activity", DogWalkerService.DogActivityLevel.NEEDS_LOTS_OF_ACTIVITY.toString());
+		dogActivityLevels.put("Regular Exersice", DogWalkerService.DogActivityLevel.REGULAR_EXERCISE.toString());
+		dogActivityLevels.put("Not Available", DogWalkerService.DogActivityLevel.NOT_AVAILABLE.toString());
+		
+		dogBarkingLevels = new HashMap<String, String>();
+		dogBarkingLevels.put("Frequent", DogWalkerService.DogBarkingLevel.FREQUENT.toString());
+		dogBarkingLevels.put("InFrequent", DogWalkerService.DogBarkingLevel.INFREQUENT.toString());
+		dogBarkingLevels.put("Likes to be Vocal", DogWalkerService.DogBarkingLevel.LIKES_TO_BE_VOCAL.toString());
+		dogBarkingLevels.put("Medium", DogWalkerService.DogBarkingLevel.MEDIUM.toString());
+		dogBarkingLevels.put("When Necessary", DogWalkerService.DogBarkingLevel.WHEN_NECESSARY.toString());
+		dogBarkingLevels.put("Not Available", DogWalkerService.DogBarkingLevel.NOT_AVAILABLE.toString());
+		
+		dogCoatTypes = new HashMap<String, String>();
+		dogCoatTypes.put("Hairless", DogWalkerService.DogCoatType.HAIRLESS.toString());
+		dogCoatTypes.put("Long", DogWalkerService.DogCoatType.LONG.toString());
+		dogCoatTypes.put("Medium", DogWalkerService.DogCoatType.MEDIUM.toString());
+		dogCoatTypes.put("Short", DogWalkerService.DogCoatType.SHORT.toString());
+		dogCoatTypes.put("Smooth", DogWalkerService.DogCoatType.SMOOTH.toString());
+		dogCoatTypes.put("Wire", DogWalkerService.DogCoatType.WIRE.toString());
+		dogCoatTypes.put("Not Available", DogWalkerService.DogCoatType.NOT_AVAILABLE.toString());
+		
+		dogSheddings = new HashMap<String, String>();
+		dogSheddings.put("Frequent", DogWalkerService.DogShedding.FREQUENT.toString());
+		dogSheddings.put("Infrequent", DogWalkerService.DogShedding.INFREQUENT.toString());
+		dogSheddings.put("Occasional", DogWalkerService.DogShedding.OCCASIONAL.toString());
+		dogSheddings.put("Regularly", DogWalkerService.DogShedding.REGULARLY.toString());
+		dogSheddings.put("Seasonal", DogWalkerService.DogShedding.SEASONAL.toString());
+		dogSheddings.put("Not Available", DogWalkerService.DogShedding.NOT_AVAILABLE.toString());
+		
+		dogSizes = new HashMap<String, String>();
+		dogSizes.put("Large", DogWalkerService.DogSize.LARGE.toString());
+		dogSizes.put("Medium", DogWalkerService.DogSize.MEDIUM.toString());
+		dogSizes.put("Small", DogWalkerService.DogSize.SMALL.toString());
+		dogSizes.put("XLarge", DogWalkerService.DogSize.XLARGE.toString());
+		dogSizes.put("XSmall", DogWalkerService.DogSize.XSMALL.toString());
+		dogSizes.put("Not Available", DogWalkerService.DogSize.NOT_AVAILABLE.toString());
+		
+		dogTrainabilities = new HashMap<String, String>();
+		dogTrainabilities.put("Agreeable", DogWalkerService.DogTrainability.AGREEABLE.toString());
+		dogTrainabilities.put("Easy to Please", DogWalkerService.DogTrainability.EAGER_TO_PLEASE.toString());
+		dogTrainabilities.put("Easy Training", DogWalkerService.DogTrainability.EASY_TRAINING.toString());
+		dogTrainabilities.put("Independent", DogWalkerService.DogTrainability.INDEPENDENT.toString());
+		dogTrainabilities.put("May be Stubborn", DogWalkerService.DogTrainability.MAY_BE_STUBBORN.toString());
+		dogTrainabilities.put("Not Available", DogWalkerService.DogTrainability.NOT_AVAILABLE.toString());	
+		
 	}
 	public String getService() {
 		return service;
@@ -336,6 +436,118 @@ public class ButtonManagedBean implements Serializable{
 
 	public void setCaredPlaces(Map<String, String> caredPlaces) {
 		this.caredPlaces = caredPlaces;
+	}
+	
+	public String getDogBreed() {
+		return dogBreed;
+	}
+
+	public void setDogBreed(String dogBreed) {
+		this.dogBreed = dogBreed;
+	}
+
+	public String getDogActivityLevel() {
+		return dogActivityLevel;
+	}
+
+	public void setDogActivityLevel(String dogActivityLevel) {
+		this.dogActivityLevel = dogActivityLevel;
+	}
+
+	public String getDogBarkingLevel() {
+		return dogBarkingLevel;
+	}
+
+	public void setDogBarkingLevel(String dogBarkingLevel) {
+		this.dogBarkingLevel = dogBarkingLevel;
+	}
+
+	public String getDogCoatType() {
+		return dogCoatType;
+	}
+
+	public void setDogCoatType(String dogCoatType) {
+		this.dogCoatType = dogCoatType;
+	}
+
+	public String getDogShedding() {
+		return dogShedding;
+	}
+
+	public void setDogShedding(String dogShedding) {
+		this.dogShedding = dogShedding;
+	}
+
+	public String getDogSize() {
+		return dogSize;
+	}
+
+	public void setDogSize(String dogSize) {
+		this.dogSize = dogSize;
+	}
+
+	public String getDogTrainability() {
+		return dogTrainability;
+	}
+
+	public void setDogTrainability(String dogTrainability) {
+		this.dogTrainability = dogTrainability;
+	}
+
+	public Map<String, String> getDogBreeds() {
+		return dogBreeds;
+	}
+
+	public void setDogBreeds(Map<String, String> dogBreeds) {
+		this.dogBreeds = dogBreeds;
+	}
+
+	public Map<String, String> getDogActivityLevels() {
+		return dogActivityLevels;
+	}
+
+	public void setDogActivityLevels(Map<String, String> dogActivityLevels) {
+		this.dogActivityLevels = dogActivityLevels;
+	}
+
+	public Map<String, String> getDogBarkingLevels() {
+		return dogBarkingLevels;
+	}
+
+	public void setDogBarkingLevels(Map<String, String> dogBarkingLevels) {
+		this.dogBarkingLevels = dogBarkingLevels;
+	}
+
+	public Map<String, String> getDogCoatTypes() {
+		return dogCoatTypes;
+	}
+
+	public void setDogCoatTypes(Map<String, String> dogCoatTypes) {
+		this.dogCoatTypes = dogCoatTypes;
+	}
+
+	public Map<String, String> getDogSheddings() {
+		return dogSheddings;
+	}
+
+	public void setDogSheddings(Map<String, String> dogSheddings) {
+		this.dogSheddings = dogSheddings;
+	}
+
+	public Map<String, String> getDogSizes() {
+		return dogSizes;
+	}
+
+	public void setDogSizes(Map<String, String> dogSizes) {
+		this.dogSizes = dogSizes;
+	}
+
+	public Map<String, String> getDogTrainabilities() {
+		return dogTrainabilities;
+	}
+
+	public void setDogTrainabilities(Map<String, String> dogTrainabilities) {
+		this.dogTrainabilities = dogTrainabilities;
 	}
 	
 	public Map<String, String> getDocuments() {
@@ -463,5 +675,62 @@ public class ButtonManagedBean implements Serializable{
 	public void setFile(UploadedFile file) {
 		this.file = file;
 	}
+	
+	public BigDecimal getTotalAreaM2() {
+		return totalAreaM2;
+	}
+
+	public void setTotalAreaM2(BigDecimal totalAreaM2) {
+		this.totalAreaM2 = totalAreaM2;
+	}
+
+	public BigDecimal getTotalRoomAmount() {
+		return totalRoomAmount;
+	}
+
+	public void setTotalRoomAmount(BigDecimal totalRoomAmount) {
+		this.totalRoomAmount = totalRoomAmount;
+	}
+
+	public BigDecimal getTotalWindowAmount() {
+		return totalWindowAmount;
+	}
+
+	public void setTotalWindowAmount(BigDecimal totalWindowAmount) {
+		this.totalWindowAmount = totalWindowAmount;
+	}
+
+	public BigDecimal getTotalWindowedRoomAmount() {
+		return totalWindowedRoomAmount;
+	}
+
+	public void setTotalWindowedRoomAmount(BigDecimal totalWindowedRoomAmount) {
+		this.totalWindowedRoomAmount = totalWindowedRoomAmount;
+	}
+
+	public BigDecimal getRoomHeightCm() {
+		return roomHeightCm;
+	}
+
+	public void setRoomHeightCm(BigDecimal roomHeightCm) {
+		this.roomHeightCm = roomHeightCm;
+	}
+
+	public boolean isContainsPet() {
+		return containsPet;
+	}
+
+	public void setContainsPet(boolean containsPet) {
+		this.containsPet = containsPet;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
 
 }
