@@ -55,24 +55,44 @@
                     <div class="Wid100"><p:inputText type="password" placeholder="Password" styleClass="Wid80 TexAlCenter Fs18" value="#{buttonManagedBean.password}" required="true"/></div>
                     <div class="EmptyBox10"></div>
 				    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="25">
-				     <p:outputLabel value="User Type :" />
-				        <p:selectOneRadio id="UserType" value="#{buttonManagedBean.userType}">
+				     	<p:outputLabel value="User Type :" />
+				        <p:selectOneRadio id="userType" value="#{buttonManagedBean.userType}" binding="#{userType}">
 				            <f:selectItem itemLabel="Consumer" itemValue="Consumer" />
 				            <f:selectItem itemLabel="Provider" itemValue="Provider" />
+				            <p:ajax update="selectServiceContainer" />
 				        </p:selectOneRadio>
 				    </h:panelGrid>
-		            <h:panelGrid columns="2" cellpadding="30">
-		                <p:outputLabel for="service" value="Service: "/>
-		                <p:selectOneMenu id="service" value="#{buttonManagedBean.service}" style="width:150px">
-		                    <p:ajax listener="#{buttonManagedBean.onServiceChange}"/>
-		                    <f:selectItem itemLabel="Select a service" itemValue="" noSelectionOption="true"/>
-		                    <f:selectItems value="#{buttonManagedBean.services}"/>
-		                </p:selectOneMenu>
-		            </h:panelGrid>
+				    <h:panelGroup id="selectServiceContainer" layout="block">
+			            <h:panelGrid columns="2" cellpadding="30" id="serviceSelectionBox" rendered="#{userType.value eq 'Provider'}">
+			                <p:outputLabel for="service" value="Service: "/>
+			                <p:selectOneMenu id="service" value="#{buttonManagedBean.service}" style="width:150px" binding="#{serviceType}">
+			                    <p:ajax listener="#{buttonManagedBean.onServiceChange}"/>
+			                    <p:ajax update="serviceContainer" />
+			                    <f:selectItem itemLabel="Select a service" itemValue="" noSelectionOption="true"/>
+			                    <f:selectItems value="#{buttonManagedBean.services}"/>
+			                </p:selectOneMenu>
+			            </h:panelGrid>
+		            </h:panelGroup>
+		            <h:panelGroup id="serviceContainer" layout="block">
+			            <h:panelGrid columns="2" cellpadding="20" id="careServiceDetail" rendered="#{buttonManagedBean.service eq 'CARE_SERVICE'}">
+			               <h:panelGrid columns="2" cellpadding="20" id="careDetail">
+			               <p:outputLabel for="caredAge" value="Cared Age: "/>
+                			<p:inputNumber id="caredAge" value="#{buttonManagedBean.caredAge}"/>
+			                <p:outputLabel for="caredPlace" value="Cared Place: "/>
+			                <p:selectOneMenu id="caredPlace" value="#{buttonManagedBean.caredPlace}" style="width:150px">
+			                    <f:selectItem itemLabel="Select a Place" itemValue="" noSelectionOption="true"/>
+			                    <f:selectItems value="#{buttonManagedBean.caredPlaces}"/>
+			                </p:selectOneMenu>
+			                <p:outputLabel for="service" value="Cared Place: "/>
+			                <p:selectOneMenu id="caredType" value="#{buttonManagedBean.caredType}" style="width:150px">
+			                    <f:selectItem itemLabel="Select a Type" itemValue="" noSelectionOption="true"/>
+			                    <f:selectItems value="#{buttonManagedBean.caredTypes}"/>
+			                </p:selectOneMenu>
+			            </h:panelGrid>
+			            </h:panelGrid>
+		            </h:panelGroup>
 		             <div class="EmptyBox30"></div>
-				    <p:fileUpload value="#{fileUploadView.file}" mode="simple" skinSimple="true"/>
-
-        			<p:commandButton value="Submit" ajax="false" action="#{fileUploadView.upload}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>
+		             
                     <div class="EmptyBox20"></div>
                     <p:selectBooleanCheckbox value="#{buttonManagedBean.accept}" itemLabel="I Accept Terms And Conditions" required="true"/>
                     <div class="EmptyBox20"></div>

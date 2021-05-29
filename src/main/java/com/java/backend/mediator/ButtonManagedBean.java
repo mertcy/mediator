@@ -1,6 +1,7 @@
 package com.java.backend.mediator;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -85,11 +86,16 @@ public class ButtonManagedBean implements Serializable{
     private String userType;
     //private Map<String,Map<String,String>> data = new HashMap<String, Map<String,String>>();
     private String service;
-    private String document;
-
+    private String caredPlace;
+	private String document;
+	private String caredType;
+	private BigDecimal caredAge;
 	private Map<String,String> services;
 	private Map<String,String> documents;
-	
+	private Map<String,String> caredPlaces;
+
+	private Map<String, String> caredTypes;
+
 	public String login() {
 		try {
 			List<User> users = userService.getAllUsers();
@@ -266,6 +272,18 @@ public class ButtonManagedBean implements Serializable{
         services.put("House Cleaning", ServiceProvided.ServiceType.HOUSE_CLEANING_SERVICE.toString());
         services.put("Dog Walker", ServiceProvided.ServiceType.DOG_WALKER_SERVICE.toString());
         
+        caredPlaces = new HashMap<String, String>();
+        caredPlaces.put("Not Available", CareService.CaredPlace.NOT_AVAILABLE.toString());
+        caredPlaces.put("Nursing Home", CareService.CaredPlace.NURSING_HOME.toString());
+        caredPlaces.put("Descendant House", CareService.CaredPlace.DESCENDANT_HOUSE.toString());
+        caredPlaces.put("Own House", CareService.CaredPlace.OWN_HOUSE.toString());
+        
+        caredTypes = new HashMap<String, String>();
+        caredTypes.put("Not Available", CareService.CaredType.NOT_AVAILABLE.toString());
+        caredTypes.put("Nursing Home", CareService.CaredType.INFANT.toString());
+        caredTypes.put("Descendant House", CareService.CaredType.ADULT.toString());
+        caredTypes.put("Own House", CareService.CaredType.OLD.toString());
+        
         documents = new HashMap<String, String>();
         documents.put(Document.DocumentType.DIPLOMA.toString(), Document.DocumentType.DIPLOMA.toString());
         documents.put(Document.DocumentType.DOG_TRAINING_CERTIFICATE.toString(), Document.DocumentType.DOG_TRAINING_CERTIFICATE.toString());
@@ -280,6 +298,22 @@ public class ButtonManagedBean implements Serializable{
 		this.service = service;
 	}
 	
+	public String getCaredPlace() {
+		return caredPlace;
+	}
+
+	public void setCaredPlace(String caredPlace) {
+		this.caredPlace = caredPlace;
+	}
+
+	public BigDecimal getCaredAge() {
+		return caredAge;
+	}
+
+	public void setCaredAge(BigDecimal caredAge) {
+		this.caredAge = caredAge;
+	}
+		
 	public String getDocument() {
 		return document;
 	}
@@ -296,12 +330,35 @@ public class ButtonManagedBean implements Serializable{
 		this.services = services;
 	}
 	
+	public Map<String, String> getCaredPlaces() {
+		return caredPlaces;
+	}
+
+	public void setCaredPlaces(Map<String, String> caredPlaces) {
+		this.caredPlaces = caredPlaces;
+	}
+	
 	public Map<String, String> getDocuments() {
 		return documents;
 	}
 
 	public void setDocuments(Map<String, String> documents) {
 		this.documents = documents;
+	}
+	
+	public String getCaredType() {
+		return caredType;
+	}
+	
+	public void setCaredType(String caredType) {
+		this.caredType = caredType;
+	}
+	public Map<String, String> getCaredTypes() {
+		return caredTypes;
+	}
+
+	public void setCaredTypes(Map<String, String> caredTypes) {
+		this.caredTypes = caredTypes;
 	}
 	
 	public String getUsername() {
