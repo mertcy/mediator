@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+
+		<h:form>
+		
+			<div class="EmptyBox20"></div>
+			<div class="Wid100 OvHidden BigTopic Fs30"><i class="icon-users Fs40"></i>Mediator Provider Profile</div>
+			<div class="EmptyBox20"></div>
+				
+			<div class="card">
+		        <p:dataTable var="profile" value="#{searchManagedBean.selectedProvider.profile}">
+		        	<p:column headerText="Profile Bio">
+				        <h:outputText value="#{profile.profileBio}" />
+				    </p:column>		   	 
+		        </p:dataTable>
+		    </div> 
+		    <br></br><br></br><br></br>
+		    <div class="card">
+		        <p:dataTable  id="user-table" var="user" value="#{searchManagedBean.selectedProvider}">
+				    <p:column headerText="User Name">
+				        <h:outputText value="#{user.userName}" />
+				    </p:column>		 
+				    <p:column headerText="Email">
+				        <h:outputText value="#{user.email}" />
+				    </p:column>
+		        </p:dataTable>
+		    </div>
+			<br></br><br></br><br></br>
+		    <div class="card">
+		        <p:dataTable var="contact" value="#{searchManagedBean.selectedProvider.contactInfo}">
+				    <p:column headerText="Name">
+				        <h:outputText value="#{contact.name}" />
+				    </p:column>		 
+				    <p:column headerText="Last Name">
+				        <h:outputText value="#{contact.lastName}" />
+				    </p:column>
+				    <p:column headerText="Birth Date">
+				        <h:outputText value="#{contact.birthDate}" />
+				    </p:column>		 
+				    <p:column headerText="Gender">
+				        <h:outputText value="#{contact.gender}" />
+				    </p:column>
+				    <p:column headerText="Nationality">
+				        <h:outputText value="#{contact.nationality}" />
+				    </p:column>		 
+				    <p:column headerText="Telephone Number">
+				        <h:outputText value="#{contact.telephoneNumber}" />
+				    </p:column>
+				    <p:column headerText="Address">
+				        <h:outputText value="#{contact.address}" />
+				    </p:column>	
+		        </p:dataTable>
+		    </div>  
+			<br></br><br></br><br></br>	
+			<div class="card">
+		        <p:dataTable var="profile" value="#{searchManagedBean.selectedProvider.profile}">
+		        	<p:column headerText="Profile Bio">
+				        <h:outputText value="#{profile.profileBio}" />
+				    </p:column>		   	 
+		        </p:dataTable>
+		    </div> 	 
+		    <br></br><br></br><br></br>		
+   			<div class="card">
+		        <p:dataTable var="providedService" value="#{searchManagedBean.selectedProvider.provider.servicesProvided}">
+				    <p:column headerText="Service Type">
+				        <h:outputText value="#{providedService.serviceType}" />
+				    </p:column>		 
+				    <p:column headerText="Service Title">
+				        <h:outputText value="#{providedService.serviceTitle}" />
+				    </p:column>	
+				    <p:column headerText="Service Description">
+				        <h:outputText value="#{providedService.serviceDescription}" />
+				    </p:column>		   	 
+		        </p:dataTable>
+		    </div> 	 
+		    <br></br><br></br><br></br>	
+   			<div class="card">
+		        <p:dataTable var="providedService1" value="#{searchManagedBean.selectedProvider.provider.servicesProvided}" >
+			    	<p:column headerText="Cared Age">
+				        <h:outputText value="#{providedService1.caredAge}" />
+				    </p:column>
+				    <p:column headerText="Cared Type">
+				        <h:outputText value="#{providedService1.caredType}" />
+				    </p:column>	
+				    <p:column headerText="Cared Place">
+				        <h:outputText value="#{providedService1.caredPlace}" />
+				    </p:column>		   	 
+		        </p:dataTable>
+		    </div> 	 
+		    <br></br><br></br><br></br>			    	      	         
+		</h:form>    
+		    
+	</ui:define>
+
+</ui:composition>
