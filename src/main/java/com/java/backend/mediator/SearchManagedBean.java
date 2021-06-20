@@ -36,6 +36,8 @@ public class SearchManagedBean {
 	private Provider provider;
 	private Consumer consumer;
 
+	private User selectedProvider;
+
 	@Autowired
 	UserController userService;
 	
@@ -44,6 +46,9 @@ public class SearchManagedBean {
 	
 	@Autowired
 	ProviderService providerService;
+	
+	@Autowired
+	ProviderController providerController;
 	
 	@PostConstruct
 	public void init() {
@@ -68,6 +73,21 @@ public class SearchManagedBean {
 			}
 		}
 		return "consumer.xhtml";
+	}
+	
+	public String getProviderProfile(String id) {
+		/*
+		Provider selectedProvider = providerController.getProvider(id);
+		
+		userList = userService.getAllUsers().stream().filter(u->u.getUserType().equals(UserType.PROVIDER)).collect(Collectors.toList());
+		List<Provider> providerList = providerService.findProviders(userList.stream().map(u->u.getId()).collect(Collectors.toList()));
+		userList.clear();
+		for(Provider p : providerList) {
+			if(p.getServicesProvided().stream().anyMatch(s->s.getServiceType().name().equals(service))) {
+				userList.add(userService.getUser(p.getId()));
+			}
+		}*/
+		return "provider_profile.xhtml";
 	}
 	
 	public String clearFilter() {
@@ -123,4 +143,11 @@ public class SearchManagedBean {
 		this.consumer = consumer;
 	}
 	
+	public User getSelectedProvider() {
+		return selectedProvider;
+	}
+
+	public void setSelectedProvider(User selectedProvider) {
+		this.selectedProvider = selectedProvider;
+	}
 }

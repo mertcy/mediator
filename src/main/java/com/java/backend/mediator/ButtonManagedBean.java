@@ -30,6 +30,7 @@ import com.java.backend.mediator.Profile.ProfileController;
 import com.java.backend.mediator.Profile.ProfileService;
 import com.java.backend.mediator.Provider.Provider;
 import com.java.backend.mediator.Provider.ProviderController;
+import com.java.backend.mediator.Provider.ProviderService;
 import com.java.backend.mediator.ServiceProvided.DogWalkerService;
 import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogActivityLevel;
 import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogBarkingLevel;
@@ -74,6 +75,9 @@ public class ButtonManagedBean implements Serializable{
 	ProviderController providerService;
 	
 	@Autowired
+	ProviderService providerServiceActual;
+	
+	@Autowired
 	ConsumerController consumerService;
 	
 	@Autowired
@@ -102,9 +106,9 @@ public class ButtonManagedBean implements Serializable{
 	private Map<String,String> services;
 	private Map<String,String> documents;
 	private Map<String,String> caredPlaces;
-
 	private Map<String, String> caredTypes;
-
+	private Map<String,Integer> ratings;
+	
 	private String dogBreed;
 	private String dogActivityLevel;
 	private String dogBarkingLevel;
@@ -132,7 +136,10 @@ public class ButtonManagedBean implements Serializable{
 	private BigDecimal roomHeightCm;
 	private boolean containsPet;
 	private String district;
-
+	
+	private Integer rating;
+	private String selectedProviderId;
+	
 	public String login() {
 		try {
 			List<User> users = userService.getAllUsers();
@@ -232,6 +239,36 @@ public class ButtonManagedBean implements Serializable{
 	public String toProfile() {
 		return "profile.xhtml";
 	}
+	
+	public String toProfileProvider(String id) {
+
+		String profilePageToBeReturned = "profile-provider.xhtml";
+		
+		searchManagedBean.setSelectedProvider(userService.getUser(id));
+		
+		ArrayList<ServiceProvided> servicesProvided = searchManagedBean.getSelectedProvider().getProvider().getServicesProvided();
+		
+		if((servicesProvided != null) && (servicesProvided.size() == 1)) {
+			
+			String providedServiceType = servicesProvided.get(0).serviceType.toString();
+			
+			if(providedServiceType.equals(ServiceProvided.ServiceType.CARE_SERVICE.toString())) {
+				profilePageToBeReturned = "profile-provider-care-service.xhtml";
+			} else if(providedServiceType.equals(ServiceProvided.ServiceType.DOG_WALKER_SERVICE.toString())) {
+				profilePageToBeReturned = "profile-provider-dog-walker-service.xhtml";
+			} else if(providedServiceType.equals(ServiceProvided.ServiceType.HOUSE_CLEANING_SERVICE.toString())) {
+				profilePageToBeReturned = "profile-provider-house-cleaning-service.xhtml";
+			}			
+		}
+
+		return profilePageToBeReturned;
+	}
+	
+    public void rateProvider() {   	    	
+    	User providerUser = userService.getUser(selectedProviderId);  	
+    	providerUser.setProvider(providerServiceActual.rateProvider(selectedProviderId, searchManagedBean.getCurrentUser().getId(), rating));
+        userService.saveUser(providerUser);
+    }	
 
 	public void clearall() {
 		// TODO Auto-generated method stub
@@ -319,6 +356,7 @@ public class ButtonManagedBean implements Serializable{
         initServiceSection();
         initCareSection();
         initDogWalkerSection();
+        initRatingSection();
 	}
 	
 	private void initServiceSection() {
@@ -405,6 +443,16 @@ public class ButtonManagedBean implements Serializable{
 		dogTrainabilities.put("Not Available", DogWalkerService.DogTrainability.NOT_AVAILABLE.toString());	
 		
 	}
+	
+	private void initRatingSection() {	
+		ratings = new HashMap<String, Integer>();
+		ratings.put("1", 1);
+		ratings.put("2", 2);
+		ratings.put("3", 3);
+		ratings.put("4", 4);
+		ratings.put("5", 5);	
+	}
+	
 	public String getService() {
 		return service;
 	}
@@ -737,6 +785,30 @@ public class ButtonManagedBean implements Serializable{
 
 	public void setDistrict(String district) {
 		this.district = district;
+	}
+
+	public Map<String, Integer> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(Map<String, Integer> ratings) {
+		this.ratings = ratings;
+	}
+
+	public Integer getRating() {
+		return rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
+	}
+
+	public String getSelectedProviderId() {
+		return selectedProviderId;
+	}
+
+	public void setSelectedProviderId(String selectedProviderId) {
+		this.selectedProviderId = selectedProviderId;
 	}
 
 
