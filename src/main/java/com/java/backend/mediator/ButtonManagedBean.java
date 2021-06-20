@@ -44,6 +44,7 @@ import com.java.backend.mediator.ServiceProvided.CareService.CaredPlace;
 import com.java.backend.mediator.ServiceProvided.CareService.CaredType;
 import com.java.backend.mediator.ServiceProvided.HouseCleaningService;
 import com.java.backend.mediator.ServiceProvided.ServiceProvided;
+import com.java.backend.mediator.ServiceProvided.ServiceProvided.ServiceType;
 import com.java.backend.mediator.User.User;
 import com.java.backend.mediator.User.User.UserType;
 import com.java.backend.mediator.User.UserController;
@@ -155,8 +156,26 @@ public class ButtonManagedBean implements Serializable{
 		 				return "consumer.xhtml";
 		 			} else if(user.get().getUserType().equals(User.UserType.PROVIDER)) {				
 		 				searchManagedBean.setProvider(providerService.getProvider(searchManagedBean.getCurrentUser().getId()));
+
+		 		    	String pageToBeReturned = "profile.xhtml";
+		 		   		ArrayList<ServiceProvided> servicesProvided = searchManagedBean.getProvider().getServicesProvided();
+		 	    		if(servicesProvided.size() == 1) {    			
+		 	    			ServiceType serviceType = servicesProvided.get(0).getServiceType();  			
+		 	    			switch(serviceType) {
+		 	    				case CARE_SERVICE:
+		 	    					pageToBeReturned = "provider-care-service.xhtml";
+		 	    					break;
+		 	    				case DOG_WALKER_SERVICE:
+		 	    					pageToBeReturned = "provider-dog-walker-service.xhtml";
+		 	    					break;
+		 	    				case HOUSE_CLEANING_SERVICE:
+		 	    					pageToBeReturned = "provider-house-cleaning-service.xhtml";
+		 	    					break;
+		 	    					
+		 	    			}
+		 	    		}
 		 				
-		 				return "provider.xhtml";
+		 				return pageToBeReturned;
 		 			}
 		 			
 				}		
@@ -221,7 +240,25 @@ public class ButtonManagedBean implements Serializable{
  				
  				clearall();
  				
- 				return "provider.xhtml";
+ 		    	String pageToBeReturned = "profile.xhtml";
+ 		   		ArrayList<ServiceProvided> servicesProvided = signupUser.getProvider().getServicesProvided();
+ 	    		if(servicesProvided.size() == 1) {    			
+ 	    			ServiceType serviceType = servicesProvided.get(0).getServiceType();  			
+ 	    			switch(serviceType) {
+ 	    				case CARE_SERVICE:
+ 	    					pageToBeReturned = "provider-care-service.xhtml";
+ 	    					break;
+ 	    				case DOG_WALKER_SERVICE:
+ 	    					pageToBeReturned = "provider-dog-walker-service.xhtml";
+ 	    					break;
+ 	    				case HOUSE_CLEANING_SERVICE:
+ 	    					pageToBeReturned = "provider-house-cleaning-service.xhtml";
+ 	    					break;
+ 	    					
+ 	    			}
+ 	    		}
+ 				
+ 				return pageToBeReturned; 				
  			}
  			
  			return "login.xhtml";
@@ -276,8 +313,24 @@ public class ButtonManagedBean implements Serializable{
     	
     	String id = searchManagedBean.getCurrentUser().getId();
     	
-    	if(providerService.getProvider(id) != null) {
-    		pageToBeReturned = "provider.xhtml";
+    	Provider provider = providerService.getProvider(id);
+    	
+    	if(provider != null) {
+    		ArrayList<ServiceProvided> servicesProvided = provider.getServicesProvided();
+    		if(servicesProvided.size() == 1) {    			
+    			ServiceType serviceType = servicesProvided.get(0).getServiceType();  			
+    			switch(serviceType) {
+    				case CARE_SERVICE:
+    					pageToBeReturned = "provider-care-service.xhtml";
+    					break;
+    				case DOG_WALKER_SERVICE:
+    					pageToBeReturned = "provider-dog-walker-service.xhtml";
+    					break;
+    				case HOUSE_CLEANING_SERVICE:
+    					pageToBeReturned = "provider-house-cleaning-service.xhtml";
+    					break;
+    			}
+    		}  		
     	} else if(consumerService.getConsumer(id) != null) {
     		pageToBeReturned = "consumer.xhtml";
     	}
@@ -349,6 +402,7 @@ public class ButtonManagedBean implements Serializable{
     }
     
     public void onRowEditProvidedService(RowEditEvent<ServiceProvided> event) {
+    	User user = searchManagedBean.getCurrentUser();;
     	ServiceProvided tempServiceProvided = event.getObject();
     	Provider provider = providerService.getProvider(searchManagedBean.getCurrentUser().getId());
     	ArrayList<ServiceProvided> servicesProvided = provider.getServicesProvided();
@@ -357,7 +411,8 @@ public class ButtonManagedBean implements Serializable{
     		if(servicesProvided.get(i).getId().equals(tempServiceProvided.getId())) {
     			servicesProvided.set(i, tempServiceProvided);
     			provider.setServicesProvided(servicesProvided);
-    			providerService.saveProvider(provider);
+    	        user.setProvider(providerService.saveProvider(provider));
+    	        userService.saveUser(user);
     		}
     	}        
     }

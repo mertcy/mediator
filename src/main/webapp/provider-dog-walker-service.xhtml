@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+
+		<h:form>
+		
+			<div class="EmptyBox20"></div>
+			<div class="Wid100 OvHidden BigTopic Fs30"><i class="icon-users Fs40"></i>Mediator Dog Walker Service Provider Profile</div>
+			<div class="EmptyBox20"></div>
+					
+   			<div class="card">
+		        <p:dataTable var="providedService" value="#{searchManagedBean.provider.servicesProvided}">
+				    <p:column headerText="Service Type">
+				        <h:outputText value="#{providedService.serviceType}" />
+				    </p:column>		 	   	 
+		        </p:dataTable>
+		    </div> 	 
+		    <br></br><br></br><br></br>	
+		    <div class="card">
+		        <p:dataTable var="providedServices" value="#{searchManagedBean.provider.servicesProvided}" editable="true">
+		        	<p:ajax event="rowEdit" listener="#{buttonManagedBean.onRowEditProvidedService}" oncomplete="window.alert('Provided Service Info Edited Succesfully!');" />
+            		<p:ajax event="rowEditCancel" oncomplete="window.alert('Provided Service Editing Canceled!');" />		        			        	
+	    		    <p:column headerText="Title">
+		                <p:cellEditor>
+		                    <f:facet name="output"><h:outputText value="#{providedServices.serviceTitle}"/></f:facet>
+		                    <f:facet name="input"><p:inputText value="#{providedServices.serviceTitle}" style="width:100%" label="Name"/></f:facet>
+		                </p:cellEditor>
+		            </p:column>	
+		            <p:column headerText="Description">
+		                <p:cellEditor>
+		                    <f:facet name="output"><h:outputText value="#{providedServices.serviceDescription}"/></f:facet>
+		                    <f:facet name="input"><p:inputText value="#{providedServices.serviceDescription}" style="width:100%" label="Name"/></f:facet>
+		                </p:cellEditor>
+		            </p:column>			
+		            <p:column headerText="Edit" style="width:40px">
+                		<p:rowEditor />
+                		<input type="hidden" value="#{providedServices.id}"/>
+            		</p:column>	    	 
+		        </p:dataTable>
+		    </div>	 
+		    <br></br><br></br><br></br>	
+		    <div class="card">
+		        <p:dataTable var="providedService" value="#{searchManagedBean.provider.servicesProvided}" >
+			    	<p:column headerText="Dog Breed">
+				        <h:outputText value="#{providedService.dogBreed}" />
+				    </p:column>
+				    <p:column headerText="Dog Activity Level">
+				        <h:outputText value="#{providedService.dogActivityLevel}" />
+				    </p:column>	
+				    <p:column headerText="Dog Barking Level">
+				        <h:outputText value="#{providedService.dogBarkingLevel}" />
+				    </p:column>
+			    	<p:column headerText="Dog Coat Type">
+				        <h:outputText value="#{providedService.dogCoatType}" />
+				    </p:column>
+				    <p:column headerText="Dog Shedding">
+				        <h:outputText value="#{providedService.dogShedding}" />
+				    </p:column>	
+				    <p:column headerText="Dog Size">
+				        <h:outputText value="#{providedService.dogSize}" />
+				    </p:column>				    
+				    <p:column headerText="Dog Trainability">
+				        <h:outputText value="#{providedService.dogTrainability}" />
+				    </p:column>						    				    		   	 
+		        </p:dataTable>
+		    </div> 	 
+		    <br></br><br></br><br></br>			    	      	         
+		</h:form>    
+		    
+	</ui:define>
+
+</ui:composition>
