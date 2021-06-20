@@ -82,19 +82,6 @@
 		        </p:dataTable>
 		    </div>    
 			<br></br><br></br><br></br>		            
-			<h:panelGrid columns="4" cellpadding="30">
-                <p:outputLabel for="document" value="Document: "/>
-                <p:selectOneMenu id="document" value="#{buttonManagedBean.document}" style="width:300px">
-                    <p:ajax listener="#{buttonManagedBean.onServiceChange}"/>
-                    <f:selectItem itemLabel="Select a document type" itemValue="" noSelectionOption="true"/>
-                    <f:selectItems value="#{buttonManagedBean.documents}"/>
-                </p:selectOneMenu>
-            </h:panelGrid>
-			<br></br><br></br><br></br>		
-			<h:form enctype="multipart/form-data" style="width:500px">
-				<p:fileUpload value="#{buttonManagedBean.file}" mode="advanced"
-					fileUploadListener="#{buttonManagedBean.uploadDocument}"></p:fileUpload>
-			</h:form>
 
 		</h:form>    
 		    
