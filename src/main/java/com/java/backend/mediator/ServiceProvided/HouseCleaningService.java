@@ -59,20 +59,20 @@ public class HouseCleaningService extends ServiceProvided {
 		this.totalAreaM2 = totalAreaM2;
 	}
 
-	public BigDecimal getTotalRoomAmount() {
+	public BigDecimal getMaxRoomNumber() {
 		return maxRoomNumber;
 	}
 
-	public void setTotalRoomAmount(BigDecimal totalRoomAmount) {
-		this.maxRoomNumber = totalRoomAmount;
+	public void setMaxRoomNumber(BigDecimal maxRoomNumber) {
+		this.maxRoomNumber = maxRoomNumber;
 	}
 
-	public BigDecimal getTotalWindowAmount() {
+	public BigDecimal getMaxWindowNumber() {
 		return maxWindowNumber;
 	}
 
-	public void setTotalWindowAmount(BigDecimal totalWindowAmount) {
-		this.maxWindowNumber = totalWindowAmount;
+	public void setMaxWindowNumber(BigDecimal maxWindowNumber) {
+		this.maxWindowNumber = maxWindowNumber;
 	}
 
 	public BigDecimal getRoomHeightCm() {
