@@ -268,7 +268,22 @@ public class ButtonManagedBean implements Serializable{
     	User providerUser = userService.getUser(selectedProviderId);  	
     	providerUser.setProvider(providerServiceActual.rateProvider(selectedProviderId, searchManagedBean.getCurrentUser().getId(), rating));
         userService.saveUser(providerUser);
-    }	
+    }
+    
+    public String toUserHomePage() {   
+    	
+    	String pageToBeReturned = "profile.xhtml";
+    	
+    	String id = searchManagedBean.getCurrentUser().getId();
+    	
+    	if(providerService.getProvider(id) != null) {
+    		pageToBeReturned = "provider.xhtml";
+    	} else if(consumerService.getConsumer(id) != null) {
+    		pageToBeReturned = "consumer.xhtml";
+    	}
+    	
+    	return pageToBeReturned;
+    }	 
 
 	public void clearall() {
 		// TODO Auto-generated method stub
