@@ -14,7 +14,27 @@
 	 	<p:column headerText="Email">
 	        <h:outputText value="#{user.email}" />
 	    </p:column>
+	    <p:column headerText="Profile">
+    		<p:commandButton value="Go to Profile" ajax="false" action="#{buttonManagedBean.toProfileProvider(user.id)}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>	    
+	    </p:column>
+	    <p:column headerText="Rate">
+    		<p:commandButton value="Click to Rate" action="#{buttonManagedBean.setSelectedProviderId(user.id)}" oncomplete="PF('rate').show();return false;" styleClass="p-mt-3 ui-button-outlined p-d-block"/>	
+	    </p:column>	    
 	</p:dataTable>
+	
+	<div style="position: absolute; left: 1px; top: 1px;">
+    	<p:dialog header="Rate Provider" widgetVar="rate" position="top" modal="false" resizable="false" style="width:600px">
+			<h:panelGrid>
+				<p:selectOneMenu id="rating" value="#{buttonManagedBean.rating}" style="width:270px">
+					<p:ajax listener="#{buttonManagedBean.rateProvider()}"/>
+					<f:selectItem itemLabel="Select rating point (1:low, 5:high)" itemValue="0" noSelectionOption="true"/>
+					<f:selectItems value="#{buttonManagedBean.ratings}"/>
+				</p:selectOneMenu>
+				<p:commandButton value="Submit" ajax="false" action="#{buttonManagedBean.rateProvider()}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>				
+			</h:panelGrid>
+		</p:dialog>
+	</div>	
+
 	<h:panelGrid columns="3" cellpadding="30">
 		<p:selectOneMenu id="service" value="#{buttonManagedBean.service}" style="width:150px">
 			<p:ajax listener="#{buttonManagedBean.onServiceChange()}"/>
