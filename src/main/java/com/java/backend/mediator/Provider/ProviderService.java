@@ -1,5 +1,6 @@
 package com.java.backend.mediator.Provider;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,10 +50,70 @@ public class ProviderService {
         		}      		
         	}
         }        
+        
+        if(rate.getRating() == 0) {
+        	rate.setStatus(Status.INACTIVE);
+        }
+        
 		ratings.add(rate);       				
     	provider.setRatings(ratings);
 
     	return this.saveProvider(provider);
+    }
+    
+    public Integer getTotalOfRatersForProvider(String providerId) {   	
+    	ArrayList<Rate> ratings = findProviderByUserId(providerId).getRatings();
+    	   	
+    	Integer counter = 0;
+    	
+        if(ratings != null) {
+        	for(Rate r : ratings) {        		
+        		if(r.getProviderId().equals(providerId)) {
+        			if(r.getStatus().equals(Status.ACTIVE)) {        				
+            			counter++;       				
+        			}
+        		}      		
+        	}   
+        }  
+        
+        return counter;    	
+    }
+    
+    public BigDecimal getTotalRatingForProvider(String providerId) {   	
+    	ArrayList<Rate> ratings = findProviderByUserId(providerId).getRatings();
+    	
+    	Integer totalRatingSum = 0; 
+    	
+        if(ratings != null) {
+        	for(Rate r : ratings) {        		
+        		if(r.getProviderId().equals(providerId)) {
+        			if(r.getStatus().equals(Status.ACTIVE)) {        				
+        				totalRatingSum += r.getRating();		
+        			}
+        		}      		
+        	}  
+        } 
+        
+        return (getTotalOfRatersForProvider(providerId) == 0) ? BigDecimal.ZERO : 
+        														BigDecimal.valueOf(1.0 * totalRatingSum / 
+        																			getTotalOfRatersForProvider(providerId));    	    	
+    }
+    
+    public Integer getConsumerRatingForProvider(String providerId, String consumerId) {   	
+    	ArrayList<Rate> ratings = findProviderByUserId(providerId).getRatings();
+    	
+    	Integer rate = 0;
+    	
+        if(ratings != null) {
+        	for(Rate r : ratings) {        		
+    			if(r.getStatus().equals(Status.ACTIVE) && r.getProviderId().equals(providerId) && r.getConsumerId().equals(consumerId)) {        				
+    				rate = r.getRating();
+    				break;
+    			}    		
+        	}  
+        }
+        
+        return rate;
     }
 
 }

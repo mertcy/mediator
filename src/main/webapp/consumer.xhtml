@@ -8,18 +8,27 @@
     <ui:define name="content">
 <h:form>
 	<p:dataTable id="xs" var="user" scrollable="true" scrollHeight="355" value="#{searchManagedBean.userList}">
-		<p:column headerText="User Name">
+		<p:column headerText="User Name"  style="width:70px">
 	        <h:outputText value="#{user.userName}" />
 	    </p:column>
-	 	<p:column headerText="Email">
+	 	<p:column headerText="Email"  style="width:70px">
 	        <h:outputText value="#{user.email}" />
 	    </p:column>
-	    <p:column headerText="Profile">
+	    <p:column headerText="Profile" style="width:40px">
     		<p:commandButton value="Go to Profile" ajax="false" action="#{buttonManagedBean.toProfileProvider(user.id)}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>	    
 	    </p:column>
-	    <p:column headerText="Rate">
+	    <p:column headerText="Rate" style="width:40px">
     		<p:commandButton value="Click to Rate" action="#{buttonManagedBean.setSelectedProviderId(user.id)}" oncomplete="PF('rate').show();return false;" styleClass="p-mt-3 ui-button-outlined p-d-block"/>	
 	    </p:column>	    
+	    <p:column headerText="Given Rating" style="width:10px">
+	    	<h:outputText value="#{buttonManagedBean.getConsumerRatingForProvider(user.id)}" />
+	    </p:column>	
+	    <p:column headerText="Total Rating" style="width:10px">
+	    	<h:outputText value="#{buttonManagedBean.getTotalRatingForProvider(user.id)}" />
+	    </p:column>
+	    <p:column headerText="Total # Raters" style="width:10px">
+	    	<h:outputText value="#{buttonManagedBean.getTotalOfRatersForProvider(user.id)}" />
+	    </p:column>	    		    
 	</p:dataTable>
 	
 	<div style="position: absolute; left: 1px; top: 1px;">

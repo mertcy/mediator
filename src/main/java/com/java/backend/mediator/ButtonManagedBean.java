@@ -416,6 +416,18 @@ public class ButtonManagedBean implements Serializable{
     		}
     	}        
     }
+    
+    public String getTotalOfRatersForProvider(String providerId) {    	
+    	return providerServiceActual.getTotalOfRatersForProvider(providerId).toString();   	
+    }
+    
+    public String getTotalRatingForProvider(String providerId) {
+    	return providerServiceActual.getTotalRatingForProvider(providerId).toString();   	
+    }
+    
+    public String getConsumerRatingForProvider(String providerId) {    	
+    	return providerServiceActual.getConsumerRatingForProvider(providerId, searchManagedBean.getCurrentUser().getId()).toString();   	
+    }
 	
 	public ButtonManagedBean() {
         documents = new HashMap<String, String>();
