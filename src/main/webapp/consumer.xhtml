@@ -44,15 +44,81 @@
 		</p:dialog>
 	</div>	
 
-	<h:panelGrid columns="3" cellpadding="30">
-		<p:selectOneMenu id="service" value="#{buttonManagedBean.service}" style="width:150px">
-			<p:ajax listener="#{buttonManagedBean.onServiceChange()}"/>
-			<f:selectItem itemLabel="Select a service" itemValue="" noSelectionOption="true"/>
-			<f:selectItems value="#{buttonManagedBean.services}"/>
-		</p:selectOneMenu>
-		<p:commandButton value="Filter Service" ajax="false" action="#{searchManagedBean.getFilteredUserList(buttonManagedBean.service)}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>
-		<p:commandButton value="Clear Filter" ajax="false" action="#{searchManagedBean.clearFilter}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>
-	</h:panelGrid>
+	<h:panelGroup columns="2" id="selectServiceContainer" layout="block">
+		<h:panelGrid columns="2" cellpadding="30" id="serviceSelectionBox">
+			<p:outputLabel for="service" value="Service: "/>
+			<p:selectOneMenu id="service" value="#{buttonManagedBean.service}" style="width:150px" binding="#{serviceType}">
+				<p:ajax listener="#{buttonManagedBean.onServiceChange}"/>
+			    <p:ajax update="serviceContainer" />
+			    <f:selectItem itemLabel="Select a service" itemValue="" noSelectionOption="true"/>
+			    <f:selectItems value="#{buttonManagedBean.services}"/>
+			</p:selectOneMenu>
+		</h:panelGrid>
+	</h:panelGroup>
+	<h:panelGroup id="serviceContainer" layout="block">
+		<h:panelGrid columns="2" cellpadding="5" id="cleaningServiceDetail" rendered="#{buttonManagedBean.service eq 'HOUSE_CLEANING_SERVICE'}">
+			<h:panelGrid columns="1" cellpadding="5" id="cleaningDetail">
+            	<p:inputNumber placeholder="Total Area(m2)" id="totalArea" value="#{searchManagedBean.totalArea}"/>
+                <div class="EmptyBox10"></div>
+                <p:inputNumber placeholder="Max Room Number" id="maxRoomNumber" value="#{searchManagedBean.maxRoomNumber}"/>
+                <div class="EmptyBox10"></div>
+                <p:inputNumber placeholder="Max Window Number" id="maxWindowNumber" value="#{searchManagedBean.maxWindowNumber}"/>
+                <div class="EmptyBox10"></div>
+                <p:inputText  placeholder="District" styleClass="Wid80 TexAlCenter Fs18" value="#{buttonManagedBean.district}" />
+            	<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="25">
+					<p:outputLabel value="Contains Pet :" />
+					<p:selectOneRadio id="containsPet" value="#{searchManagedBean.containsPet}">
+						<f:selectItem itemLabel="Evet" itemValue="true" />
+						<f:selectItem itemLabel="Hayır" itemValue="false" />
+					</p:selectOneRadio>
+				</h:panelGrid>
+			</h:panelGrid>
+		</h:panelGrid>
+		<h:panelGrid columns="2" cellpadding="20" id="careServiceDetail" rendered="#{buttonManagedBean.service eq 'CARE_SERVICE'}">
+			<h:panelGrid columns="2" cellpadding="20" id="careDetail">
+				<p:outputLabel for="caredAge" value="Cared Age: "/>
+                <p:inputNumber id="caredAge" value="#{searchManagedBean.caredAge}"/>
+			    <p:outputLabel for="caredPlace" value="Cared Place: "/>
+			    <p:selectOneMenu id="caredPlace" value="#{searchManagedBean.caredPlace}" style="width:150px">
+			        <f:selectItem itemLabel="Select a Place" itemValue="" noSelectionOption="true"/>
+			        <f:selectItems value="#{buttonManagedBean.caredPlaces}"/>
+			    </p:selectOneMenu>
+			    <p:outputLabel for="service" value="Cared Type: "/>
+			    <p:selectOneMenu id="caredType" value="#{searchManagedBean.caredType}" style="width:150px">
+				    <f:selectItem itemLabel="Select a Type" itemValue="" noSelectionOption="true"/>
+				    <f:selectItems value="#{buttonManagedBean.caredTypes}"/>
+			    </p:selectOneMenu>
+			</h:panelGrid>
+		</h:panelGrid>
+		<h:panelGrid columns="2" cellpadding="10" id="dogWalkerServiceDetail" rendered="#{buttonManagedBean.service eq 'DOG_WALKER_SERVICE'}">
+			<h:panelGrid columns="2" cellpadding="10" id="dogWalkerDetail">
+				<p:outputLabel for="dogBreed" value="Dog Breed: "/>
+			    <p:selectOneMenu id="dogBreed" value="#{searchManagedBean.dogBreed}" style="width:150px">
+			   		<f:selectItem itemLabel="Select Breed" itemValue="" noSelectionOption="true"/>
+			        <f:selectItems value="#{buttonManagedBean.dogBreeds}"/>
+			    </p:selectOneMenu>
+			    <p:outputLabel for="dogActivityLevel" value="Dog Activity Level: "/>
+			    <p:selectOneMenu id="dogActivityLevel" value="#{searchManagedBean.dogActivityLevel}" style="width:150px">
+			    	<f:selectItem itemLabel="Select Activity Level" itemValue="" noSelectionOption="true"/>
+			        <f:selectItems value="#{buttonManagedBean.dogActivityLevels}"/>
+			    </p:selectOneMenu>
+			    <p:outputLabel for="dogSize" value="Dog Size: "/>
+			    <p:selectOneMenu id="dogSize" value="#{searchManagedBean.dogSize}" style="width:150px">
+			    	<f:selectItem itemLabel="Select Size" itemValue="" noSelectionOption="true"/>
+			        <f:selectItems value="#{buttonManagedBean.dogSizes}"/>
+			    </p:selectOneMenu>
+			    <p:outputLabel for="dogTrainability" value="Dog Trainability: "/>
+			    <p:selectOneMenu id="dogTrainability" value="#{searchManagedBean.dogTrainability}" style="width:150px">
+			    	<f:selectItem itemLabel="Select Trainability" itemValue="" noSelectionOption="true"/>
+			        <f:selectItems value="#{buttonManagedBean.dogTrainabilities}"/>
+			   	</p:selectOneMenu>
+			</h:panelGrid>
+		</h:panelGrid>
+		<h:panelGrid columns="3" cellpadding="30">
+			<p:commandButton value="Filter Service" ajax ="false" action="#{searchManagedBean.getFilteredUserList(buttonManagedBean.service)}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>
+			<p:commandButton value="Clear Filter" ajax="false" action="#{searchManagedBean.clearFilter}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>
+		</h:panelGrid>
+	</h:panelGroup>
 	<div class="EmptyBox20"></div>
 </h:form>        
     </ui:define>

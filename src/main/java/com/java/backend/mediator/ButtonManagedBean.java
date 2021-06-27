@@ -473,7 +473,7 @@ public class ButtonManagedBean implements Serializable{
 		dogBreeds.put("Golden Retriever", DogWalkerService.DogBreed.GOLDEN_RETRIEVER.toString());
 		dogBreeds.put("Labrador Retriever", DogWalkerService.DogBreed.LABRADOR_RETRIEVER.toString());
 		dogBreeds.put("Pitbull", DogWalkerService.DogBreed.PITBULL.toString());
-		dogBreeds.put("Pitbull", DogWalkerService.DogBreed.MIX.toString());
+		dogBreeds.put("Mix", DogWalkerService.DogBreed.MIX.toString());
 		dogBreeds.put("Not Available", DogWalkerService.DogBreed.NOT_AVAILABLE.toString());
 		
 		dogActivityLevels = new HashMap<String, String>();

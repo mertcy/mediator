@@ -1,5 +1,6 @@
 package com.java.backend.mediator;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,9 +15,17 @@ import org.springframework.stereotype.Component;
 import com.java.backend.mediator.Consumer.Consumer;
 import com.java.backend.mediator.MediatorMessage.MediatorMessage;
 import com.java.backend.mediator.Profile.ProfileService;
+import com.java.backend.mediator.ServiceProvided.*;
+import com.java.backend.mediator.ServiceProvided.CareService.CaredPlace;
+import com.java.backend.mediator.ServiceProvided.CareService.CaredType;
+import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogActivityLevel;
+import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogBreed;
+import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogSize;
+import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogTrainability;
 import com.java.backend.mediator.Provider.Provider;
 import com.java.backend.mediator.Provider.ProviderController;
 import com.java.backend.mediator.Provider.ProviderService;
+import com.java.backend.mediator.ServiceProvided.ServiceProvided;
 import com.java.backend.mediator.ServiceProvided.ServiceProvided.ServiceType;
 import com.java.backend.mediator.User.User;
 import com.java.backend.mediator.User.User.UserType;
@@ -35,6 +44,19 @@ public class SearchManagedBean {
 	
 	private Provider provider;
 	private Consumer consumer;
+	
+	private String caredPlace;
+	private String caredType;
+	private BigDecimal caredAge;
+	private String dogBreed;
+	private String dogActivityLevel;
+	private String dogSize;
+	private String dogTrainability;	
+	private BigDecimal totalArea;
+	private BigDecimal maxRoomNumber;
+	private BigDecimal maxWindowNumber;
+	private boolean containsPet;
+	private String district;
 
 	private User selectedProvider;
 
@@ -68,8 +90,27 @@ public class SearchManagedBean {
 		List<Provider> providerList = providerService.findProviders(userList.stream().map(u->u.getId()).collect(Collectors.toList()));
 		userList.clear();
 		for(Provider p : providerList) {
-			if(p.getServicesProvided().stream().anyMatch(s->s.getServiceType().name().equals(service))) {
-				userList.add(userService.getUser(p.getId()));
+			if(p.getServicesProvided().get(0).getServiceType().name().equals(service)) {
+				ServiceProvided provided = p.getServicesProvided().get(0);	
+				if(service.equals("HOUSE_CLEANING_SERVICE")
+					 && (totalArea == null || ((HouseCleaningService) provided).getTotalAreaM2().compareTo(totalArea) > 0)
+					 && (maxRoomNumber == null || ((HouseCleaningService) provided).getMaxRoomNumber().compareTo(maxRoomNumber) > 0)
+					 && (maxWindowNumber == null || ((HouseCleaningService) provided).getMaxWindowNumber().compareTo(maxWindowNumber) > 0)
+					 && (((HouseCleaningService) provided).isContainsPet() == containsPet)
+					 && (district == null || ((HouseCleaningService) provided).getDistrict().equals(district))){		
+					userList.add(userService.getUser(p.getId()));
+				}else if(service.equals("DOG_WALKER_SERVICE")
+					 && (dogBreed == null || dogBreed == "" || ((DogWalkerService) provided).getDogBreed().equals(DogBreed.valueOf(dogBreed)))
+					 && (dogActivityLevel == null || dogActivityLevel == "" || ((DogWalkerService) provided).getDogActivityLevel().equals(DogActivityLevel.valueOf(dogActivityLevel)))
+					 && (dogSize == null || dogSize == "" || ((DogWalkerService) provided).getDogSize().equals(DogSize.valueOf(dogSize)))
+					 && (dogTrainability == null || dogTrainability == "" || ((DogWalkerService) provided).getDogTrainability().equals(DogTrainability.valueOf(dogTrainability)))) {
+					userList.add(userService.getUser(p.getId()));
+				}else if(service.equals("CARE_SERVICE") 
+					 && (caredPlace == null || ((CareService) provided).getCaredPlace().equals(CaredPlace.valueOf(caredPlace)))
+					 && (caredType == null || ((CareService) provided).getCaredType().equals(CaredType.valueOf(caredType)))
+					 && (caredAge == null || ((CareService) provided).getCaredAge().compareTo(caredAge) > 0)){
+					userList.add(userService.getUser(p.getId()));
+				}
 			}
 		}
 		return "consumer.xhtml";
@@ -149,5 +190,101 @@ public class SearchManagedBean {
 
 	public void setSelectedProvider(User selectedProvider) {
 		this.selectedProvider = selectedProvider;
+	}
+	
+	public String getCaredPlace() {
+		return caredPlace;
+	}
+
+	public void setCaredPlace(String caredPlace) {
+		this.caredPlace = caredPlace;
+	}
+
+	public String getCaredType() {
+		return caredType;
+	}
+
+	public void setCaredType(String caredType) {
+		this.caredType = caredType;
+	}
+
+	public BigDecimal getCaredAge() {
+		return caredAge;
+	}
+
+	public void setCaredAge(BigDecimal caredAge) {
+		this.caredAge = caredAge;
+	}
+
+	public String getDogBreed() {
+		return dogBreed;
+	}
+
+	public void setDogBreed(String dogBreed) {
+		this.dogBreed = dogBreed;
+	}
+
+	public String getDogActivityLevel() {
+		return dogActivityLevel;
+	}
+
+	public void setDogActivityLevel(String dogActivityLevel) {
+		this.dogActivityLevel = dogActivityLevel;
+	}
+
+	public String getDogSize() {
+		return dogSize;
+	}
+
+	public void setDogSize(String dogSize) {
+		this.dogSize = dogSize;
+	}
+
+	public String getDogTrainability() {
+		return dogTrainability;
+	}
+
+	public void setDogTrainability(String dogTrainability) {
+		this.dogTrainability = dogTrainability;
+	}
+
+	public BigDecimal getMaxRoomNumber() {
+		return maxRoomNumber;
+	}
+
+	public void setMaxRoomNumber(BigDecimal maxRoomNumber) {
+		this.maxRoomNumber = maxRoomNumber;
+	}
+
+	public BigDecimal getMaxWindowNumber() {
+		return maxWindowNumber;
+	}
+
+	public void setMaxWindowNumber(BigDecimal maxWindowNumber) {
+		this.maxWindowNumber = maxWindowNumber;
+	}
+
+	public boolean isContainsPet() {
+		return containsPet;
+	}
+
+	public void setContainsPet(boolean containsPet) {
+		this.containsPet = containsPet;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	
+	public BigDecimal getTotalArea() {
+		return totalArea;
+	}
+
+	public void setTotalArea(BigDecimal totalArea) {
+		this.totalArea = totalArea;
 	}
 }
