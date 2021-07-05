@@ -26,7 +26,6 @@ import com.java.backend.mediator.Provider.Provider;
 import com.java.backend.mediator.Provider.ProviderController;
 import com.java.backend.mediator.Provider.ProviderService;
 import com.java.backend.mediator.ServiceProvided.ServiceProvided;
-import com.java.backend.mediator.ServiceProvided.ServiceProvided.ServiceType;
 import com.java.backend.mediator.User.User;
 import com.java.backend.mediator.User.User.UserType;
 import com.java.backend.mediator.User.UserController;
@@ -71,6 +70,9 @@ public class SearchManagedBean {
 	
 	@Autowired
 	ProviderController providerController;
+	
+	@Autowired
+	ButtonManagedBean buttonManagedBean;
 	
 	@PostConstruct
 	public void init() {
@@ -133,6 +135,24 @@ public class SearchManagedBean {
 	
 	public String clearFilter() {
 		userList = userService.getAllUsers().stream().filter(u->u.getUserType().equals(UserType.PROVIDER)).collect(Collectors.toList());
+		
+		buttonManagedBean.setService(null);
+		
+		caredAge = null;
+		caredPlace = null;
+		caredType = null;
+		
+		dogBreed = null;
+		dogActivityLevel = null;
+		dogSize = null;
+		dogTrainability = null;
+		
+		totalArea = null;
+		maxRoomNumber = null;
+		maxWindowNumber = null;
+		containsPet = false;
+		district = null;
+		
 		return "consumer.xhtml";
 	}
 	
