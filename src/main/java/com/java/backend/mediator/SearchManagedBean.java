@@ -93,9 +93,9 @@ public class SearchManagedBean {
 			if(p.getServicesProvided().get(0).getServiceType().name().equals(service)) {
 				ServiceProvided provided = p.getServicesProvided().get(0);	
 				if(service.equals("HOUSE_CLEANING_SERVICE")
-					 && (totalArea == null || ((HouseCleaningService) provided).getTotalAreaM2().compareTo(totalArea) > 0)
-					 && (maxRoomNumber == null || ((HouseCleaningService) provided).getMaxRoomNumber().compareTo(maxRoomNumber) > 0)
-					 && (maxWindowNumber == null || ((HouseCleaningService) provided).getMaxWindowNumber().compareTo(maxWindowNumber) > 0)
+					 && (totalArea == null || ((HouseCleaningService) provided).getTotalAreaM2().compareTo(totalArea) == 0)
+					 && (maxRoomNumber == null || ((HouseCleaningService) provided).getMaxRoomNumber().compareTo(maxRoomNumber) == 0)
+					 && (maxWindowNumber == null || ((HouseCleaningService) provided).getMaxWindowNumber().compareTo(maxWindowNumber) == 0)
 					 && (((HouseCleaningService) provided).isContainsPet() == containsPet)
 					 && (district == null || ((HouseCleaningService) provided).getDistrict().equals(district))){		
 					userList.add(userService.getUser(p.getId()));
@@ -108,7 +108,7 @@ public class SearchManagedBean {
 				}else if(service.equals("CARE_SERVICE") 
 					 && (caredPlace == null || ((CareService) provided).getCaredPlace().equals(CaredPlace.valueOf(caredPlace)))
 					 && (caredType == null || ((CareService) provided).getCaredType().equals(CaredType.valueOf(caredType)))
-					 && (caredAge == null || ((CareService) provided).getCaredAge().compareTo(caredAge) > 0)){
+					 && (caredAge == null || ((CareService) provided).getCaredAge().compareTo(caredAge) == 0)){
 					userList.add(userService.getUser(p.getId()));
 				}
 			}
