@@ -206,7 +206,7 @@ public class ButtonManagedBean implements Serializable{
 			contact.setTelephoneNumber(phoneNumber);
 			contact.setId(signupUser.getId());	
 			signupUser.setContactInfo(contact);
-			signupUser = userService.createUser(signupUser);
+			signupUser = userService.saveUser(signupUser);
 			
 			// set current user session
 			searchManagedBean.setCurrentUser(signupUser);
