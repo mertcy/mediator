@@ -44,6 +44,18 @@ public class ContactInfo extends Model {
         telephoneNumber = MediatorMessage.STATUS_NOTAVAILABLE;
         address = MediatorMessage.STATUS_NOTAVAILABLE;
     }
+    
+    public ContactInfo(String userId, String name, String lastName, 
+    					String birthDate, String gender, String nationality, String telephoneNumber, String address) {     
+        super.setId(userId);
+        this.name = name;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.nationality = nationality;
+        this.telephoneNumber = telephoneNumber;
+        this.address = address;
+    }
 
     public String getName() {
 		return name;

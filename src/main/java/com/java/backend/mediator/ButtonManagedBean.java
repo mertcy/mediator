@@ -20,17 +20,15 @@ import org.primefaces.model.file.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.java.backend.mediator.Consumer.ConsumerController;
+import com.java.backend.mediator.Consumer.IConsumerService;
 import com.java.backend.mediator.ContactInfo.ContactInfo;
-import com.java.backend.mediator.ContactInfo.ContactInfoController;
+import com.java.backend.mediator.ContactInfo.IContactInfoService;
 import com.java.backend.mediator.Document.Document;
 import com.java.backend.mediator.Document.Document.DocumentType;
+import com.java.backend.mediator.Profile.IProfileService;
 import com.java.backend.mediator.Profile.Profile;
-import com.java.backend.mediator.Profile.ProfileController;
-import com.java.backend.mediator.Profile.ProfileService;
+import com.java.backend.mediator.Provider.IProviderService;
 import com.java.backend.mediator.Provider.Provider;
-import com.java.backend.mediator.Provider.ProviderController;
-import com.java.backend.mediator.Provider.ProviderService;
 import com.java.backend.mediator.ServiceProvided.DogWalkerService;
 import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogActivityLevel;
 import com.java.backend.mediator.ServiceProvided.DogWalkerService.DogBarkingLevel;
@@ -45,9 +43,9 @@ import com.java.backend.mediator.ServiceProvided.CareService.CaredType;
 import com.java.backend.mediator.ServiceProvided.HouseCleaningService;
 import com.java.backend.mediator.ServiceProvided.ServiceProvided;
 import com.java.backend.mediator.ServiceProvided.ServiceProvided.ServiceType;
+import com.java.backend.mediator.User.IUserService;
 import com.java.backend.mediator.User.User;
 import com.java.backend.mediator.User.User.UserType;
-import com.java.backend.mediator.User.UserController;
 
 @SessionScoped
 @ManagedBean
@@ -61,25 +59,19 @@ public class ButtonManagedBean implements Serializable{
 	private static final long serialVersionUID = -9069971252976959506L;
 
 	@Autowired
-	UserController userService;
+	IUserService userService;
 	
 	@Autowired
-	ContactInfoController contactService;
+	IContactInfoService contactService;
 
 	@Autowired
-	ProfileService profileService;
+	IProfileService profileService;
 	
 	@Autowired
-	ProfileController profileController;
+	IProviderService providerService;
 	
 	@Autowired
-	ProviderController providerService;
-	
-	@Autowired
-	ProviderService providerServiceActual;
-	
-	@Autowired
-	ConsumerController consumerService;
+	IConsumerService consumerService;
 	
 	@Autowired
 	SearchManagedBean searchManagedBean;
@@ -148,14 +140,14 @@ public class ButtonManagedBean implements Serializable{
 				if (user.isPresent()) {
 		
 					// set current user session
-					searchManagedBean.setCurrentUser(userService.getUser(user.get().getId()));
+					searchManagedBean.setCurrentUser(userService.findUserByUserId(user.get().getId()));
 					
 		 			if(user.get().getUserType().equals(User.UserType.CONSUMER)) {
-		 				searchManagedBean.setConsumer(consumerService.getConsumer(searchManagedBean.getCurrentUser().getId()));
+		 				searchManagedBean.setConsumer(consumerService.findConsumerByUserId(searchManagedBean.getCurrentUser().getId()));
 		 				
 		 				return "consumer.xhtml";
 		 			} else if(user.get().getUserType().equals(User.UserType.PROVIDER)) {				
-		 				searchManagedBean.setProvider(providerService.getProvider(searchManagedBean.getCurrentUser().getId()));
+		 				searchManagedBean.setProvider(providerService.findProviderByUserId(searchManagedBean.getCurrentUser().getId()));
 
 		 		    	String pageToBeReturned = "profile.xhtml";
 		 		   		ArrayList<ServiceProvided> servicesProvided = searchManagedBean.getProvider().getServicesProvided();
@@ -190,21 +182,14 @@ public class ButtonManagedBean implements Serializable{
 	//TODO provider document
 		//TODO where to set service type
 		User user = new User();
-		user.setPassword(password);
+	    user.setPassword(password);
 		user.setEmail(email);
 		user.setUserType(userType.equals("Consumer")?UserType.CONSUMER:UserType.PROVIDER);
 		user.setUserName(username);
 		try {
 			User signupUser = userService.createUser(user);
-			ContactInfo contact = new ContactInfo();
-			contact.setName(name);
-			contact.setLastName(surname);
-			contact.setAddress(address);
-			contact.setBirthDate(birthDate.toLocaleString());
-			contact.setGender(gender);
-			contact.setNationality(nationality);
-			contact.setTelephoneNumber(phoneNumber);
-			contact.setId(signupUser.getId());	
+			ContactInfo contact = new ContactInfo(signupUser.getId(), name, surname, address, 
+													birthDate.toString(), gender, nationality, phoneNumber);
 			signupUser.setContactInfo(contact);
 			signupUser = userService.saveUser(signupUser);
 			
@@ -212,7 +197,7 @@ public class ButtonManagedBean implements Serializable{
 			searchManagedBean.setCurrentUser(signupUser);
 
  			if(signupUser.getUserType().equals(User.UserType.CONSUMER)) {				
- 				searchManagedBean.setConsumer(consumerService.getConsumer(searchManagedBean.getCurrentUser().getId()));
+ 				searchManagedBean.setConsumer(consumerService.findConsumerByUserId(searchManagedBean.getCurrentUser().getId()));
  				
  				return "consumer.xhtml";
  			} else if(signupUser.getUserType().equals(User.UserType.PROVIDER)) {
@@ -232,11 +217,11 @@ public class ButtonManagedBean implements Serializable{
  					serviceProvided = new HouseCleaningService(totalAreaM2, maxRoomNumber, maxWindowNumber, roomHeightCm, containsPet, district);
  				}
  				
- 				Provider provider = providerService.getProvider(searchManagedBean.getCurrentUser().getId());				
+ 				Provider provider = providerService.findProviderByUserId(searchManagedBean.getCurrentUser().getId());				
  				signupUser.setProvider(providerService.saveServiceProvided(provider.getId(), serviceProvided)); 
  				userService.saveUser(signupUser);
  				
- 				searchManagedBean.setProvider(providerService.getProvider(searchManagedBean.getCurrentUser().getId()));
+ 				searchManagedBean.setProvider(providerService.findProviderByUserId(searchManagedBean.getCurrentUser().getId()));
  				
  				clearall();
  				
@@ -281,7 +266,7 @@ public class ButtonManagedBean implements Serializable{
 
 		String profilePageToBeReturned = "profile-provider.xhtml";
 		
-		searchManagedBean.setSelectedProvider(userService.getUser(id));
+		searchManagedBean.setSelectedProvider(userService.findUserByUserId(id));
 		
 		ArrayList<ServiceProvided> servicesProvided = searchManagedBean.getSelectedProvider().getProvider().getServicesProvided();
 		
@@ -302,8 +287,8 @@ public class ButtonManagedBean implements Serializable{
 	}
 	
     public void rateProvider() {   	    	
-    	User providerUser = userService.getUser(selectedProviderId);  	
-    	providerUser.setProvider(providerServiceActual.rateProvider(selectedProviderId, searchManagedBean.getCurrentUser().getId(), rating));
+    	User providerUser = userService.findUserByUserId(selectedProviderId);  	
+    	providerUser.setProvider(providerService.rateProvider(selectedProviderId, searchManagedBean.getCurrentUser().getId(), rating));
         userService.saveUser(providerUser);
     }
     
@@ -313,7 +298,7 @@ public class ButtonManagedBean implements Serializable{
     	
     	String id = searchManagedBean.getCurrentUser().getId();
     	
-    	Provider provider = providerService.getProvider(id);
+    	Provider provider = providerService.findProviderByUserId(id);
     	
     	if(provider != null) {
     		ArrayList<ServiceProvided> servicesProvided = provider.getServicesProvided();
@@ -331,7 +316,7 @@ public class ButtonManagedBean implements Serializable{
     					break;
     			}
     		}  		
-    	} else if(consumerService.getConsumer(id) != null) {
+    	} else if(consumerService.findConsumerByUserId(id) != null) {
     		pageToBeReturned = "consumer.xhtml";
     	}
     	
@@ -380,7 +365,7 @@ public class ButtonManagedBean implements Serializable{
 	    documentObj.setDocumentTitle(file.getFileName());
 	    documentObj.setDocumentDescription(file.getContent().toString());
 
-	    profileController.saveDocument(searchManagedBean.getCurrentUser().getId(), documentObj);
+	    profileService.saveDocument(searchManagedBean.getCurrentUser().getId(), documentObj);
 	    
 	}
 	
@@ -397,14 +382,14 @@ public class ButtonManagedBean implements Serializable{
     	User user = searchManagedBean.getCurrentUser();
     	Profile profile = user.getProfile();
         profile.setProfileBio(event.getObject().getProfileBio());
-        user.setProfile(profileController.saveProfile(profile));
+        user.setProfile(profileService.saveProfile(profile));
         userService.saveUser(user);
     }
     
     public void onRowEditProvidedService(RowEditEvent<ServiceProvided> event) {
     	User user = searchManagedBean.getCurrentUser();;
     	ServiceProvided tempServiceProvided = event.getObject();
-    	Provider provider = providerService.getProvider(searchManagedBean.getCurrentUser().getId());
+    	Provider provider = providerService.findProviderByUserId(searchManagedBean.getCurrentUser().getId());
     	ArrayList<ServiceProvided> servicesProvided = provider.getServicesProvided();
     	
     	for(int i = 0; i < servicesProvided.size(); i++) {  		
@@ -418,15 +403,15 @@ public class ButtonManagedBean implements Serializable{
     }
     
     public String getTotalOfRatersForProvider(String providerId) {    	
-    	return providerServiceActual.getTotalOfRatersForProvider(providerId).toString();   	
+    	return providerService.getTotalOfRatersForProvider(providerId).toString();   	
     }
     
     public String getTotalRatingForProvider(String providerId) {
-    	return providerServiceActual.getTotalRatingForProvider(providerId).toString();   	
+    	return providerService.getTotalRatingForProvider(providerId).toString();   	
     }
     
     public String getConsumerRatingForProvider(String providerId) {    	
-    	return providerServiceActual.getConsumerRatingForProvider(providerId, searchManagedBean.getCurrentUser().getId()).toString();   	
+    	return providerService.getConsumerRatingForProvider(providerId, searchManagedBean.getCurrentUser().getId()).toString();   	
     }
 	
 	public ButtonManagedBean() {

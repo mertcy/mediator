@@ -1,7 +1,5 @@
 package com.java.backend.mediator.Profile;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,33 +18,22 @@ public class ProfileController {
     }
     
     @PutMapping(value = "/save", produces = "application/json")
-    public Profile saveProfile(@RequestBody Profile profile) {
-    	Profile tempProfile = profileService.findProfileByUserId(profile.getId());
-        if (tempProfile != null) {
-        	profile.setDocuments(new ArrayList<Document>());
-        	tempProfile = profileService.saveProfile(profile);
-        }
- 
-        return tempProfile;
+    public Profile saveProfile(@RequestBody Profile profile) { 
+        return profileService.saveProfile(profile);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
     public Profile getProfile(@PathVariable String id) {
-    	Profile profile = profileService.findProfileByUserId(id);
-        return profile;
+        return profileService.findProfileByUserId(id);
     }
     
     @PostMapping(value = "/{id}/save-document", produces = "application/json")
     public Profile saveDocument(@PathVariable String id, @RequestBody Document document) {  	   	
-    	Profile profile = profileService.findProfileByUserId(id);
-    	ArrayList<Document> documents = profile.getDocuments(); 
-        if (documents == null) {
-        	documents = new ArrayList<Document>();
-        }
-    	documents.add(document);
-    	profile.setDocuments(documents);
-
-    	return profileService.saveProfile(profile);
+    	return profileService.saveDocument(id, document);
     }
     
+    @GetMapping("/")
+    public String home() {
+        return "Hello from Mediator App Service Profile Endpoint!";
+    }
 }

@@ -19,18 +19,16 @@ public class ContactInfoController {
     
     @PutMapping(value = "/save", produces = "application/json")
     public ContactInfo saveContactInfo(@RequestBody ContactInfo contactInfo) {
-    	ContactInfo tempContactInfo = contactInfoService.findContactInfoByUserId(contactInfo.getId());
-    	if (tempContactInfo != null) {
-    		tempContactInfo = contactInfoService.saveContactInfo(contactInfo);
-    	}
-
-        return tempContactInfo;
+        return contactInfoService.saveContactInfo(contactInfo);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
     public ContactInfo getContactInfo(@PathVariable String id) {
-    	ContactInfo contactInfo = contactInfoService.findContactInfoByUserId(id);
-        return contactInfo;
+        return contactInfoService.findContactInfoByUserId(id);
     }
     
+    @GetMapping("/")
+    public String home() {
+        return "Hello from Mediator App Service Contact Endpoint!";
+    }
 }
