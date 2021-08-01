@@ -1,6 +1,7 @@
 package com.java.backend.mediator.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.java.backend.mediator.Consumer.Consumer;
@@ -158,4 +159,9 @@ public class UserService implements IUserService {
     	
         return user;    	
     }
+    
+    @Override
+ 	public BCryptPasswordEncoder encoder() {
+ 	    return new BCryptPasswordEncoder();
+ 	}
 }

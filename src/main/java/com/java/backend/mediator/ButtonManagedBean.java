@@ -136,7 +136,7 @@ public class ButtonManagedBean implements Serializable{
 	public String login() {
 		try {
 			List<User> users = userService.getAllUsers();
-			Optional<User> user = users.stream().filter(Objects::nonNull).filter(u->u.getUserName().equals(username) && u.getPassword().equals(password)).findFirst();
+			Optional<User> user = users.stream().filter(Objects::nonNull).filter(u->u.getUserName().equals(username) && userService.encoder().matches(password, u.getPassword())).findFirst();
 				if (user.isPresent()) {
 		
 					// set current user session
@@ -182,7 +182,7 @@ public class ButtonManagedBean implements Serializable{
 	//TODO provider document
 		//TODO where to set service type
 		User user = new User();
-	    user.setPassword(password);
+		user.setPassword(userService.encoder().encode(password));
 		user.setEmail(email);
 		user.setUserType(userType.equals("Consumer")?UserType.CONSUMER:UserType.PROVIDER);
 		user.setUserName(username);
